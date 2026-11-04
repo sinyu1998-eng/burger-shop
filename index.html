@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>汉堡快餐店 - 在线订餐</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #F5F5F5;
+      color: #373B2F;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* 颜色变量 */
+    :root {
+      --primary: #557937;
+      --secondary: #FFA149;
+      --dark: #373B2F;
+      --light: #F5F5F5;
+      --accent: #FFD166;
+    }
+    
+    /* 头部导航 */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .logo i {
+      margin-right: 8px;
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .action-btn {
+      position: relative;
+      padding: 8px;
+      border-radius: 50%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--dark);
+    }
+    
+    .action-btn:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: var(--primary);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* 主内容区 */
+    main {
+      padding: 24px 0;
+    }
+    
+    /* 英雄区 */
+    .hero-section {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      height: 280px;
+    }
+    
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      padding: 20px;
+    }
+    
+    .hero-title {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    
+    .hero-subtitle {
+      font-size: 18px;
+      margin-bottom: 24px;
+      max-width: 400px;
+    }
+    
+    /* 按钮样式 */
+    .btn {
+      padding: 12px 32px;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+    }
+    
+    .btn-secondary {
+      background-color: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--light);
+    }
+    
+    /* 分类按钮 */
+    .categories-section {
+      margin-bottom: 32px;
+    }
+    
+    .categories-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    
+    .category-btn {
+      padding: 8px 24px;
+      border-radius: 20px;
+      background-color: #e0e0e0;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+    
+    .category-btn:hover {
+      background-color: #d0d0d0;
+    }
+    
+    .category-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    /* 菜单列表 */
+    .menu-section {
+      margin-bottom: 48px;
+    }
+    
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    
+    .menu-item {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .menu-item:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      transform: translateY(-4px);
+    }
+    
+    .menu-item-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      position: relative;
+    }
+    
+    .menu-item-price {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background-color: var(--primary);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .menu-item-rating {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .menu-item-content {
+      padding: 16px;
+    }
+    
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .menu-item-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .menu-item-stars {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+    
+    .menu-item-stars i {
+      color: #ffc107;
+      margin-right: 2px;
+    }
+    
+    .menu-item-reviews {
+      margin-left: 8px;
+      color: #666;
+      font-size: 12px;
+    }
+    
+    .menu-item-description {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: var(--secondary);
+    }
+    
+    /* 结算区域 */
+    .checkout-section {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      margin-bottom: 48px;
+    }
+    
+    .checkout-section.hidden {
+      display: none;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    
+    @media (max-width: 768px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .checkout-column h3 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(85, 121, 55, 0.2);
+    }
+    
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    .checkout-actions {
+      text-align: right;
+      margin-top: 24px;
+    }
+    
+    /* 购物车抽屉 */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background-color: white;
+      box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .drawer.open {
+      transform: translateX(0);
+    }
+    
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .drawer-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .close-btn {
+      padding: 8px;
+      border-radius: 50%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    
+    .close-btn:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .drawer-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+    
+    .empty-cart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #999;
+    }
+    
+    .empty-cart i {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    
+    .cart-list {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .cart-item {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .cart-item-info {
+      flex: 1;
+    }
+    
+    .cart-item-name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    
+    .cart-item-price {
+      color: var(--primary);
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .quantity-btn {
+      padding: 4px 8px;
+      border: 1px solid #ddd;
+      background: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    
+    .quantity-value {
+      padding: 0 12px;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .remove-item-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #999;
+      font-size: 18px;
+    }
+    
+    .remove-item-btn:hover {
+      color: #ff4444;
+    }
+    
+    /* 购物车摘要 */
+    .cart-summary {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+    
+    /* 遮罩层 */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 40;
+      display: none;
+    }
+    
+    /* 订单确认弹窗 */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    
+    .success-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #e8f5e8;
+      color: #4caf50;
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    
+    .modal-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .modal-message {
+      color: #666;
+      margin-bottom: 24px;
+    }
+    
+    .countdown-container {
+      background-color: var(--light);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .countdown-text {
+      margin-bottom: 8px;
+    }
+    
+    .countdown-timer {
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .countdown-progress {
+      width: 100%;
+      height: 8px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .countdown-bar {
+      height: 100%;
+      background-color: var(--primary);
+      width: 100%;
+      transition: width 1s linear;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .modal-actions .btn {
+      flex: 1;
+    }
+    
+    /* 页脚 */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 48px 0;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    
+    .footer-column h3 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    
+    .footer-column p {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .social-link {
+      color: #ccc;
+      font-size: 20px;
+      transition: color 0.3s ease;
+    }
+    
+    .social-link:hover {
+      color: white;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 8px;
+    }
+    
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .contact-info {
+      list-style: none;
+    }
+    
+    .contact-info li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: #ccc;
+      font-size: 14px;
+    }
+    
+    .contact-info i {
+      margin-top: 4px;
+    }
+    
+    .hours-info {
+      list-style: none;
+    }
+    
+    .hours-info li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: #ccc;
+      font-size: 14px;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid #444;
+      color: #999;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <header>
+    <div class="container header-content">
+      <div class="logo">
+        <i class="fa fa-cutlery"></i>海岛汉堡快餐店
+      </div>
+      
+      <div class="header-actions">
+        <button id="cart-button" class="action-btn">
+          <i class="fa fa-shopping-cart"></i>
+          <span id="cart-count" class="badge">0</span>
+        </button>
+        <button id="user-button" class="action-btn">
+          <i class="fa fa-user"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主内容区 -->
+  <main class="container">
+    <!-- 英雄区 -->
+    <section class="hero-section">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'%3E%3Crect width='800' height='300' fill='%23557937'/%3E%3Ctext x='400' y='150' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3E美味汉堡 急速送达%3C/text%3E%3Ctext x='400' y='190' font-size='18' text-anchor='middle' fill='white'%3E新鲜食材，现点现做，30分钟内送达%3C/text%3E%3C/svg%3E" alt="汉堡套餐" class="hero-image">
+      <div class="hero-overlay">
+        <h2 class="hero-title">美味快餐 急速送达</h2>
+        <p class="hero-subtitle">新鲜食材，现点现做，30分钟内送达您的手中</p>
+        <button class="btn btn-primary">立即订餐</button>
+      </div>
+    </section>
+
+    <!-- 菜单分类 -->
+    <section class="categories-section">
+      <div class="categories-list">
+        <button class="category-btn active" data-category="all">全部</button>
+        <button class="category-btn" data-category="burger">汉堡</button>
+        <button class="category-btn" data-category="pizza">披萨</button>
+        <button class="category-btn" data-category="snack">小食</button>
+        <button class="category-btn" data-category="drink">饮料</button>
+      </div>
+    </section>
+
+    <!-- 菜单列表 -->
+    <section class="menu-section">
+      <div id="menu-container" class="menu-grid">
+        <!-- 菜单项将通过JavaScript动态生成 -->
+      </div>
+    </section>
+
+    <!-- 地址和时间选择 -->
+    <section id="checkout-section" class="checkout-section hidden">
+      <h2 class="section-title">确认订单</h2>
+      
+      <div class="checkout-grid">
+        <!-- 地址选择 -->
+        <div class="checkout-column">
+          <h3>配送地址</h3>
+          <div class="form-group">
+            <label for="recipient-name">收货人</label>
+            <input type="text" id="recipient-name" class="form-control" placeholder="请输入收货人姓名">
+          </div>
+          <div class="form-group">
+            <label for="recipient-phone">联系电话</label>
+            <input type="tel" id="recipient-phone" class="form-control" placeholder="请输入联系电话">
+          </div>
+          <div class="form-group">
+            <label for="recipient-address">详细地址</label>
+            <textarea id="recipient-address" class="form-control" rows="3" placeholder="请输入详细配送地址"></textarea>
+          </div>
+        </div>
+        
+        <!-- 时间选择 -->
+        <div class="checkout-column">
+          <h3>配送时间</h3>
+          <div class="form-group">
+            <label for="delivery-date">选择日期</label>
+            <input type="date" id="delivery-date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="delivery-time">选择时间</label>
+            <select id="delivery-time" class="form-control">
+              <option value="">请选择配送时间</option>
+              <option value="asap">尽快送达</option>
+              <option value="11:00-11:30">11:00-11:30</option>
+              <option value="11:30-12:00">11:30-12:00</option>
+              <option value="12:00-12:30">12:00-12:30</option>
+              <option value="12:30-13:00">12:30-13:00</option>
+              <option value="18:00-18:30">18:00-18:30</option>
+              <option value="18:30-19:00">18:30-19:00</option>
+              <option value="19:00-19:30">19:00-19:30</option>
+              <option value="19:30-20:00">19:30-20:00</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="order-notes">备注信息</label>
+            <textarea id="order-notes" class="form-control" rows="3" placeholder="请输入备注信息（选填）"></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <div class="checkout-actions">
+        <button id="confirm-order-btn" class="btn btn-primary">确认订单</button>
+      </div>
+    </section>
+
+    <!-- 订单确认倒计时 -->
+    <section id="countdown-section" class="modal">
+      <div class="modal-content">
+        <div class="success-icon">
+          <i class="fa fa-check"></i>
+        </div>
+        <h2 class="modal-title">订单提交成功！</h2>
+        <p class="modal-message">您的订单已成功提交，我们将尽快为您配送</p>
+        
+        <div class="countdown-container">
+          <p class="countdown-text">订单将在 <span id="countdown-timer" class="countdown-timer">15:00</span> 后自动确认</p>
+          <div class="countdown-progress">
+            <div id="countdown-progress" class="countdown-bar"></div>
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button id="cancel-order-btn" class="btn btn-secondary">取消订单</button>
+          <button id="view-order-btn" class="btn btn-primary">查看订单</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 购物车抽屉 -->
+  <div id="cart-drawer" class="drawer">
+    <div class="drawer-header">
+      <h2 class="drawer-title">购物车</h2>
+      <button id="close-cart-btn" class="close-btn">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="drawer-content">
+      <!-- 购物车为空状态 -->
+      <div id="empty-cart" class="empty-cart">
+        <i class="fa fa-shopping-cart"></i>
+        <p>购物车还是空的</p>
+        <button id="start-shopping-btn" class="btn btn-primary">开始购物</button>
+      </div>
+      
+      <!-- 购物车商品列表 -->
+      <div id="cart-list" class="cart-list">
+        <!-- 购物车商品将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div id="cart-summary" class="cart-summary">
+      <div class="summary-row">
+        <span>商品总价</span>
+        <span id="subtotal">¥0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>配送费</span>
+        <span id="delivery-fee">¥0.00</span>
+      </div>
+      <div class="summary-total">
+        <span>总计</span>
+        <span id="total">¥0.00</span>
+      </div>
+      <button id="checkout-btn" class="btn btn-primary" style="width: 100%; margin-top: 16px;">去结算</button>
+    </div>
+  </div>
+
+  <!-- 遮罩层 -->
+  <div id="overlay" class="overlay"></div>
+
+  <script>
+    // 设置默认配送日期为今天
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('delivery-date').value = today;
+      
+      // 初始化菜单
+      initializeMenu();
+      
+      // 初始化事件监听
+      initializeEventListeners();
+    });
+
+    // 菜单数据
+    const menuItems = [
+      {
+        id: 1,
+        name: '豪华汉堡套餐',
+        category: 'burger',
+        price: 29.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FFA149"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E豪华汉堡套餐%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥29.9%3C/text%3E%3C/svg%3E',
+        description: '双层牛肉汉堡搭配金黄薯条和冰爽可乐',
+        rating: 4.8,
+        reviewCount: 125
+      },
+      {
+        id: 2,
+        name: '鸡肉汉堡套餐',
+        category: 'burger',
+        price: 25.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FFD166"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E鸡肉汉堡套餐%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥25.9%3C/text%3E%3C/svg%3E',
+        description: '香脆鸡肉汉堡搭配鸡块和冰爽可乐',
+        rating: 4.5,
+        reviewCount: 98
+      },
+      {
+        id: 3,
+        name: '经典汉堡套餐',
+        category: 'burger',
+        price: 39.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23557937"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E经典汉堡套餐%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥39.9%3C/text%3E%3C/svg%3E',
+        description: '经典牛肉汉堡搭配鸡块和冰爽可乐',
+        rating: 4.6,
+        reviewCount: 156
+      },
+      {
+        id: 4,
+        name: '水果披萨',
+        category: 'pizza',
+        price: 49.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FF6B6B"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E水果披萨%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥49.9%3C/text%3E%3C/svg%3E',
+        description: '清晰水果披萨，9英寸',
+        rating: 4.3,
+        reviewCount: 87
+      },
+      {
+        id: 5,
+        name: '培根香肠披萨',
+        category: 'pizza',
+        price: 45.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%234ECDC4"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E培根香肠披萨%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥45.9%3C/text%3E%3C/svg%3E',
+        description: '经典培根香肠披萨，9英寸',
+        rating: 4.7,
+        reviewCount: 112
+      },
+      {
+        id: 6,
+        name: '芝士薯条',
+        category: 'snack',
+        price: 12.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FFA149"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E芝士薯条%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥12.9%3C/text%3E%3C/svg%3E',
+        description: '金黄薯条淋上香浓芝士酱',
+        rating: 4.9,
+        reviewCount: 203
+      },
+      {
+        id: 7,
+        name: '蔓越莓巧克力饼干',
+        category: 'snack',
+        price: 15.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23A8E6CF"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E蔓越莓巧克力饼干%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥15.9%3C/text%3E%3C/svg%3E',
+        description: '蔓越莓，巧克力，4块',
+        rating: 4.4,
+        reviewCount: 76
+      },
+      {
+        id: 8,
+        name: '果仁麦片酸奶杯',
+        category: 'snack',
+        price: 19.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FFD93D"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E果仁麦片酸奶杯%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥19.9%3C/text%3E%3C/svg%3E',
+        description: '低卡，酸奶杯',
+        rating: 4.2,
+        reviewCount: 64
+      },
+      {
+        id: 9,
+        name: '青柠特饮',
+        category: 'drink',
+        price: 8.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%236BCB77"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E青柠特饮%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥8.9%3C/text%3E%3C/svg%3E',
+        description: '清新青柠特饮',
+        rating: 4.6,
+        reviewCount: 92
+      },
+      {
+        id: 10,
+        name: '草莓奶昔',
+        category: 'drink',
+        price: 12.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FF8C42"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E草莓奶昔%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥12.9%3C/text%3E%3C/svg%3E',
+        description: '香甜草莓奶昔',
+        rating: 4.8,
+        reviewCount: 145
+      },
+      {
+        id: 11,
+        name: '卡布奇诺',
+        category: 'drink',
+        price: 6.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23C44536"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E卡布奇诺%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥6.9%3C/text%3E%3C/svg%3E',
+        description: '可选全脂牛奶，脱脂牛奶',
+        rating: 4.5,
+        reviewCount: 89
+      },
+      {
+        id: 12,
+        name: '菠萝汁',
+        category: 'drink',
+        price: 5.9,
+        image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23FFD166"/%3E%3Ctext x="150" y="100" font-size="16" font-weight="bold" text-anchor="middle" fill="white"%3E菠萝汁%3C/text%3E%3Ctext x="150" y="120" font-size="12" text-anchor="middle" fill="white"%3E¥5.9%3C/text%3E%3C/svg%3E',
+        description: '菠萝，百香果，梨',
+        rating: 4.3,
+        reviewCount: 78
+      }
+    ];
+
+    // 购物车数据
+    let cart = [];
+    const deliveryThreshold = 50; // 免配送费阈值
+    const deliveryFee = 8; // 配送费
+
+    // 初始化菜单
+    function initializeMenu() {
+      const menuContainer = document.getElementById('menu-container');
+      menuContainer.innerHTML = '';
+      
+      menuItems.forEach(item => {
+        const menuItem = createMenuItem(item);
+        menuContainer.appendChild(menuItem);
+      });
+    }
+
+    // 创建菜单项
+    function createMenuItem(item) {
+      const menuItem = document.createElement('div');
+      menuItem.className = `menu-item ${item.category}`;
+      menuItem.setAttribute('data-category', item.category);
+      
+      // 创建星级评分HTML
+      function createRatingStars(rating) {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+        
+        let starsHTML = '';
+        
+        // 添加全星
+        for (let i = 0; i < fullStars; i++) {
+          starsHTML += '<i class="fa fa-star"></i>';
+        }
+        
+        // 添加半星
+        if (halfStar) {
+          starsHTML += '<i class="fa fa-star-half-o"></i>';
+        }
+        
+        // 添加空星
+        for (let i = 0; i < emptyStars; i++) {
+          starsHTML += '<i class="fa fa-star-o"></i>';
+        }
+        
+        return starsHTML;
+      }
+      
+      const ratingHTML = createRatingStars(item.rating);
+      
+      menuItem.innerHTML = `
+        <div style="position: relative;">
+          <img src="${item.image}" alt="${item.name}" class="menu-item-image">
+          <span class="menu-item-price">¥${item.price.toFixed(2)}</span>
+          <div class="menu-item-rating">
+            <span>${item.rating.toFixed(1)}</span>
+            <i class="fa fa-star"></i>
+          </div>
+        </div>
+        <div class="menu-item-content">
+          <div class="menu-item-header">
+            <h3 class="menu-item-name">${item.name}</h3>
+            <div class="menu-item-stars">
+              <div>${ratingHTML}</div>
+              <span class="menu-item-reviews">(${item.reviewCount})</span>
+            </div>
+          </div>
+          <p class="menu-item-description">${item.description}</p>
+          <button class="add-to-cart-btn" data-id="${item.id}">
+            <i class="fa fa-plus"></i> 加入购物车
+          </button>
+        </div>
+      `;
+      
+      return menuItem;
+    }
+
+    // 初始化事件监听
+    function initializeEventListeners() {
+      // 分类按钮点击事件
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // 移除所有按钮的active状态
+          document.querySelectorAll('.category-btn').forEach(b => {
+            b.classList.remove('active');
+          });
+          
+          // 添加当前按钮的active状态
+          this.classList.add('active');
+          
+          // 筛选菜单
+          const category = this.getAttribute('data-category');
+          filterMenu(category);
+        });
+      });
+      
+      // 加入购物车按钮点击事件
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('add-to-cart-btn') || e.target.parentElement.classList.contains('add-to-cart-btn')) {
+          const btn = e.target.classList.contains('add-to-cart-btn') ? e.target : e.target.parentElement;
+          const itemId = parseInt(btn.getAttribute('data-id'));
+          addToCart(itemId);
+        }
+      });
+      
+      // 购物车按钮点击事件
+      document.getElementById('cart-button').addEventListener('click', function() {
+        openCart();
+      });
+      
+      // 关闭购物车按钮点击事件
+      document.getElementById('close-cart-btn').addEventListener('click', function() {
+        closeCart();
+      });
+      
+      // 开始购物按钮点击事件
+      document.getElementById('start-shopping-btn').addEventListener('click', function() {
+        closeCart();
+      });
+      
+      // 去结算按钮点击事件
+      document.getElementById('checkout-btn').addEventListener('click', function() {
+        closeCart();
+        document.getElementById('checkout-section').classList.remove('hidden');
+        // 滚动到结算区域
+        document.getElementById('checkout-section').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      // 确认订单按钮点击事件
+      document.getElementById('confirm-order-btn').addEventListener('click', function() {
+        // 简单表单验证
+        const name = document.getElementById('recipient-name').value;
+        const phone = document.getElementById('recipient-phone').value;
+        const address = document.getElementById('recipient-address').value;
+        const time = document.getElementById('delivery-time').value;
+        
+        if (!name || !phone || !address || !time) {
+          alert('请填写完整的订单信息');
+          return;
+        }
+        
+        // 显示订单确认倒计时
+        document.getElementById('countdown-section').style.display = 'flex';
+        startCountdown();
+      });
+      
+      // 取消订单按钮点击事件
+      document.getElementById('cancel-order-btn').addEventListener('click', function() {
+        document.getElementById('countdown-section').style.display = 'none';
+        resetCountdown();
+      });
+      
+      // 查看订单按钮点击事件
+      document.getElementById('view-order-btn').addEventListener('click', function() {
+        document.getElementById('countdown-section').style.display = 'none';
+        resetCountdown();
+        alert('订单功能正在开发中，敬请期待！');
+      });
+      
+      // 遮罩层点击事件
+      document.getElementById('overlay').addEventListener('click', function() {
+        closeCart();
+      });
+    }
+
+    // 筛选菜单
+    function filterMenu(category) {
+      const menuItems = document.querySelectorAll('.menu-item');
+      
+      menuItems.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-category') === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // 添加到购物车
+    function addToCart(itemId) {
+      const item = menuItems.find(item => item.id === itemId);
+      
+      if (item) {
+        // 检查购物车中是否已有该商品
+        const existingItem = cart.find(cartItem => cartItem.id === itemId);
+        
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            quantity: 1
+          });
+        }
+        
+        // 更新购物车UI
+        updateCartUI();
+        
+        // 显示添加成功动画
+        showAddToCartAnimation(itemId);
+      }
+    }
+
+    // 从购物车移除商品
+    function removeFromCart(itemId) {
+      const index = cart.findIndex(item => item.id === itemId);
+      
+      if (index !== -1) {
+        cart.splice(index, 1);
+        updateCartUI();
+      }
+    }
+
+    // 更新商品数量
+    function updateQuantity(itemId, newQuantity) {
+      if (newQuantity < 1) return;
+      
+      const item = cart.find(item => item.id === itemId);
+      
+      if (item) {
+        item.quantity = newQuantity;
+        updateCartUI();
+      }
+    }
+
+    // 更新购物车UI
+    function updateCartUI() {
+      const cartList = document.getElementById('cart-list');
+      const emptyCart = document.getElementById('empty-cart');
+      const cartSummary = document.getElementById('cart-summary');
+      const cartCount = document.getElementById('cart-count');
+      const subtotalElement = document.getElementById('subtotal');
+      const deliveryFeeElement = document.getElementById('delivery-fee');
+      const totalElement = document.getElementById('total');
+      
+      // 更新购物车数量
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      // 显示或隐藏空购物车提示
+      if (cart.length === 0) {
+        cartList.style.display = 'none';
+        emptyCart.style.display = 'flex';
+        cartSummary.style.display = 'none';
+        return;
+      } else {
+        cartList.style.display = 'flex';
+        emptyCart.style.display = 'none';
+        cartSummary.style.display = 'block';
+      }
+      
+      // 更新购物车商品列表
+      cartList.innerHTML = '';
+      
+      cart.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        
+        cartItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+          <div class="cart-item-info">
+            <h4 class="cart-item-name">${item.name}</h4>
+            <p class="cart-item-price">¥${item.price.toFixed(2)}</p>
+            <div class="cart-item-quantity">
+              <button class="quantity-btn" data-action="decrease" data-id="${item.id}">-</button>
+              <span class="quantity-value">${item.quantity}</span>
+              <button class="quantity-btn" data-action="increase" data-id="${item.id}">+</button>
+            </div>
+          </div>
+          <button class="remove-item-btn" data-id="${item.id}">
+            <i class="fa fa-trash"></i>
+          </button>
+        `;
+        
+        cartList.appendChild(cartItem);
+      });
+      
+      // 添加数量调整按钮事件监听
+      document.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const itemId = parseInt(this.getAttribute('data-id'));
+          const action = this.getAttribute('data-action');
+          const item = cart.find(item => item.id === itemId);
+          
+          if (item) {
+            if (action === 'increase') {
+              updateQuantity(itemId, item.quantity + 1);
+            } else if (action === 'decrease') {
+              if (item.quantity > 1) {
+                updateQuantity(itemId, item.quantity - 1);
+              } else {
+                removeFromCart(itemId);
+              }
+            }
+          }
+        });
+      });
+      
+      document.querySelectorAll('.remove-item-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const itemId = parseInt(this.getAttribute('data-id'));
+          removeFromCart(itemId);
+        });
+      });
+      
+      // 计算金额
+      const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      const fee = subtotal >= deliveryThreshold ? 0 : deliveryFee;
+      const total = subtotal + fee;
+      
+      // 更新金额显示
+      subtotalElement.textContent = `¥${subtotal.toFixed(2)}`;
+      deliveryFeeElement.textContent = `¥${fee.toFixed(2)}`;
+      totalElement.textContent = `¥${total.toFixed(2)}`;
+    }
+
+    // 显示添加成功动画
+    function showAddToCartAnimation(itemId) {
+      const btn = document.querySelector(`.add-to-cart-btn[data-id="${itemId}"]`);
+      
+      if (btn) {
+        btn.innerHTML = '<i class="fa fa-check"></i> 已添加';
+        btn.style.backgroundColor = '#4caf50';
+        
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa fa-plus"></i> 加入购物车';
+          btn.style.backgroundColor = '#557937';
+        }, 1500);
+      }
+    }
+
+    // 打开购物车
+    function openCart() {
+      document.getElementById('cart-drawer').classList.add('open');
+      document.getElementById('overlay').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+
+    // 关闭购物车
+    function closeCart() {
+      document.getElementById('cart-drawer').classList.remove('open');
+      document.getElementById('overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // 订单确认倒计时
+    let countdownInterval;
+    let countdownSeconds = 900; // 15分钟
+
+    // 开始倒计时
+    function startCountdown() {
+      const timerElement = document.getElementById('countdown-timer');
+      const progressElement = document.getElementById('countdown-progress');
+      const initialSeconds = countdownSeconds;
+      
+      updateCountdownDisplay();
+      
+      countdownInterval = setInterval(() => {
+        countdownSeconds--;
+        
+        if (countdownSeconds <= 0) {
+          clearInterval(countdownInterval);
+          alert('订单已自动确认！');
+          document.getElementById('countdown-section').style.display = 'none';
+          resetCountdown();
+          return;
+        }
+        
+        updateCountdownDisplay();
+        
+        // 更新进度条
+        const progress = (countdownSeconds / initialSeconds) * 100;
+        progressElement.style.width = `${progress}%`;
+      }, 1000);
+      
+      function updateCountdownDisplay() {
+        const minutes = Math.floor(countdownSeconds / 60);
+        const seconds = countdownSeconds % 60;
+        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }
+
+    // 重置倒计时
+    function resetCountdown() {
+      clearInterval(countdownInterval);
+      countdownSeconds = 900; // 重置为15分钟
+      document.getElementById('countdown-progress').style.width = '100%';
+    }
+  </script>
+  
+  <!-- Font Awesome 图标库（简化版，只包含我们需要的图标） -->
+  <script>
+    // 简化的Font Awesome图标实现
+    const icons = {
+      'cutlery': '&#xf0f5;',
+      'shopping-cart': '&#xf07a;',
+      'user': '&#xf007;',
+      'plus': '&#xf067;',
+      'check': '&#xf00c;',
+      'minus': '&#xf068;',
+      'trash': '&#xf1f8;',
+      'times': '&#xf00d;',
+      'star': '&#xf005;',
+      'star-half-o': '&#xf123;',
+      'star-o': '&#xf006;'
+    };
+    
+    // 替换所有fa图标
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.fa').forEach(icon => {
+        const iconName = icon.className.replace('fa ', '');
+        if (icons[iconName]) {
+          icon.innerHTML = icons[iconName];
+          icon.style.fontFamily = 'FontAwesome';
+        }
+      });
+    });
+  </script>
+  
+  <!-- 页脚 -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <!-- 关于我们 -->
+        <div class="footer-column">
+          <h3>关于我们</h3>
+          <p>海岛汉堡快餐店致力于提供高品质的汉堡和快餐食品，新鲜食材，现点现做，30分钟内送达您的手中。</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fa fa-weixin"></i></a>
+          </div>
+        </div>
+        
+        <!-- 快速链接 -->
+        <div class="footer-column">
+          <h3>快速链接</h3>
+          <ul class="footer-links">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">菜单</a></li>
+            <li><a href="#">优惠活动</a></li>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系我们</a></li>
+          </ul>
+        </div>
+        
+        <!-- 联系方式 -->
+        <div class="footer-column">
+          <h3>联系方式</h3>
+          <ul class="contact-info">
+            <li>
+              <i class="fa fa-map-marker"></i>
+              <span>三亚市海棠湾海棠北路88号</span>
+            </li>
+            <li>
+              <i class="fa fa-phone"></i>
+              <span>400-888-8888</span>
+            </li>
+            <li>
+              <i class="fa fa-envelope"></i>
+              <span>info@haidaohamburger.com</span>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- 营业时间 -->
+        <div class="footer-column">
+          <h3>营业时间</h3>
+          <ul class="hours-info">
+            <li>
+              <span>周一至周五</span>
+              <span>10:00 - 22:00</span>
+            </li>
+            <li>
+              <span>周六至周日</span>
+              <span>09:00 - 23:00</span>
+            </li>
+            <li>
+              <span>节假日</span>
+              <span>09:00 - 23:00</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 海岛汉堡快餐店. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html> - 22:00</span>
+            </li>
+            <li>
+              <span>周六至周日</span>
+              <span>09:00 - 23:00</span>
+            </li>
+            <li>
+              <span>节假日</span>
+              <span>09:00
