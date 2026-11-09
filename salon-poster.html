@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>沙龙海报 · YIWU ROOF LOUNGE</title>
+<style>
+  @page { margin:0; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    width:1080px;height:1440px;overflow:hidden;position:relative;
+    background:#0a0a0c;color:#ece8e1;
+    font-family:-apple-system,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  }
+  .bg{
+    position:absolute;inset:0;
+    background:url('assets/hero.jpg') center center / cover no-repeat;
+  }
+  .veil{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(10,10,12,.42) 0%, rgba(10,10,12,.78) 55%, rgba(10,10,12,.97) 100%),
+      linear-gradient(180deg, rgba(10,10,12,.55) 0%, rgba(10,10,12,.2) 30%, rgba(10,10,12,.92) 72%, #0a0a0c 100%);
+  }
+  .grain{
+    position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;
+    background-image:radial-gradient(#fff 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  .frame{
+    position:absolute;inset:38px;border:1px solid rgba(201,169,97,.28);
+    pointer-events:none;
+  }
+  .content{position:absolute;inset:0;display:flex;flex-direction:column;padding:86px 92px 78px}
+
+  /* ---- top ---- */
+  .top{display:flex;align-items:center;justify-content:space-between;letter-spacing:.3em;font-size:15px}
+  .top .l{color:#e6d3a3;font-weight:600}
+  .top .c{color:rgba(201,169,97,.55);font-size:13px;letter-spacing:.5em}
+  .top .r{color:rgba(236,232,225,.5);font-size:13px}
+
+  .rule{height:1px;background:linear-gradient(90deg,rgba(201,169,97,.5),rgba(201,169,97,.06));margin:28px 0 0}
+
+  /* ---- headline ---- */
+  .head{margin-top:auto}
+  .kicker{
+    display:inline-flex;align-items:center;gap:14px;
+    font-size:16px;letter-spacing:.34em;color:#c9a961;margin-bottom:30px;
+  }
+  .kicker::before{content:"";width:44px;height:1px;background:#c9a961}
+  h1{
+    font-family:"Songti SC","Noto Serif SC",Georgia,serif;font-weight:400;
+    font-size:106px;line-height:1.14;letter-spacing:.01em;
+  }
+  h1 em{font-style:normal;color:#e6d3a3}
+  .sub{
+    margin-top:30px;font-size:24px;color:#b7b1a7;letter-spacing:.06em;line-height:1.7;
+  }
+
+  /* ---- info ---- */
+  .info{
+    margin-top:58px;display:grid;grid-template-columns:1fr 1fr;
+    gap:0;border-top:1px solid rgba(201,169,97,.22);
+    border-bottom:1px solid rgba(201,169,97,.22);
+  }
+  .cell{padding:30px 34px 30px 0;border-bottom:1px solid rgba(201,169,97,.12)}
+  .cell:nth-child(odd){border-right:1px solid rgba(201,169,97,.12);padding-right:0;padding-left:0}
+  .cell:nth-child(even){padding-left:38px;padding-right:0}
+  .cell:nth-child(3),.cell:nth-child(4){border-bottom:none}
+  .cell:nth-child(3){padding-right:0}
+  .k{font-size:12px;letter-spacing:.3em;color:rgba(201,169,97,.85);margin-bottom:12px}
+  .v{font-size:26px;line-height:1.5;color:#f0ece4}
+  .v small{display:block;font-size:16px;color:#8f897f;margin-top:6px;letter-spacing:.04em}
+  .v b{color:#e6d3a3;font-weight:600}
+
+  /* ---- topics ---- */
+  .topics{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .chip{
+    padding:12px 22px;border:1px solid rgba(201,169,97,.34);border-radius:2px;
+    font-size:17px;color:#d8d2c7;letter-spacing:.05em;
+  }
+  .chip i{font-style:normal;color:#c9a961;margin-right:9px;font-size:13px}
+
+  /* ---- agenda ---- */
+  .agenda{margin-top:46px;display:flex;gap:0}
+  .step{flex:1;position:relative;padding-right:18px}
+  .step .dot{width:7px;height:7px;border-radius:50%;background:#c9a961;margin-bottom:16px}
+  .step .ln{position:absolute;top:3px;left:14px;right:0;height:1px;background:rgba(201,169,97,.22)}
+  .step .t{font-size:14px;color:#c9a961;letter-spacing:.14em;margin-bottom:7px}
+  .step .d{font-size:16px;color:#a9a399;letter-spacing:.03em}
+
+  /* ---- footer ---- */
+  .foot{
+    margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;
+    padding-top:34px;border-top:1px solid rgba(201,169,97,.22);
+  }
+  .foot .join{font-size:15px;color:#8f897f;letter-spacing:.12em;margin-bottom:10px}
+  .foot .way{font-size:25px;color:#e6d3a3;letter-spacing:.04em;font-weight:600}
+  .foot .way span{color:#6f6a62;font-size:17px;font-weight:400;margin:0 10px}
+  .badge{
+    text-align:right;font-size:13px;color:#6f6a62;letter-spacing:.22em;line-height:2;
+  }
+  .badge b{color:#c9a961;font-size:16px;letter-spacing:.24em}
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="veil"></div>
+  <div class="grain"></div>
+  <div class="frame"></div>
+
+  <div class="content">
+    <div class="top">
+      <div class="l">YIWU ROOF LOUNGE</div>
+      <div class="c">×</div>
+      <div class="r">MARGUERITE</div>
+    </div>
+    <div class="rule"></div>
+
+    <div class="head">
+      <div class="kicker">外贸 × 跨境电商 闭门沙龙</div>
+      <h1>把货，卖到<br><em>世界的另一端</em></h1>
+      <div class="sub">29 楼，一群真在做生意的人，聊点不客套的问题。</div>
+    </div>
+
+    <div class="info">
+      <div class="cell">
+        <div class="k">TIME 时间</div>
+        <div class="v">11.21 周六<small>14:00 – 17:00</small></div>
+      </div>
+      <div class="cell">
+        <div class="k">VENUE 地点</div>
+        <div class="v">思达大厦 29 楼<small>义乌 · 福田街道 · YIWU ROOF LOUNGE</small></div>
+      </div>
+      <div class="cell">
+        <div class="k">SEATS 席位</div>
+        <div class="v">限 <b>30</b> 人<small>审核制，谢绝空降</small></div>
+      </div>
+      <div class="cell">
+        <div class="k">FEE 费用</div>
+        <div class="v">免费<small>含一杯联名特调</small></div>
+      </div>
+    </div>
+
+    <div class="topics">
+      <div class="chip"><i>01</i>平台流量见底，独立站还值不值</div>
+      <div class="chip"><i>02</i>工厂直出 vs 贸易商</div>
+      <div class="chip"><i>03</i>跨境收款与合规的坑</div>
+    </div>
+
+    <div class="agenda">
+      <div class="step"><div class="dot"></div><div class="ln"></div><div class="t">14:00</div><div class="d">签到 · 特调</div></div>
+      <div class="step"><div class="dot"></div><div class="ln"></div><div class="t">14:30</div><div class="d">主题分享</div></div>
+      <div class="step"><div class="dot"></div><div class="ln"></div><div class="t">15:30</div><div class="d">圆桌对话</div></div>
+      <div class="step"><div class="dot"></div><div class="ln"></div><div class="t">16:30</div><div class="d">自由对接</div></div>
+    </div>
+
+    <div class="foot">
+      <div>
+        <div class="join">报名 / 咨询</div>
+        <div class="way">微信私信<span>·</span>18258411112</div>
+      </div>
+      <div class="badge">
+        <b>YIWU ROOF LOUNGE</b><br>
+        义乌汝弗西餐吧 · 29F
+      </div>
+    </div>
+  </div>
+</body>
+</html>
