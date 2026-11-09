@@ -42,7 +42,7 @@
   .brand{display:flex;align-items:baseline;gap:10px;letter-spacing:.22em;font-family:var(--serif)}
   .brand b{font-size:15px;font-weight:600;color:var(--gold-2)}
   .brand span{font-size:10px;color:var(--muted);letter-spacing:.3em}
-  nav{display:flex;align-items:center;gap:28px}
+  nav{display:flex;align-items:center;gap:26px}
   nav a{
     color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.12em;
     transition:color .2s;position:relative;
@@ -60,6 +60,14 @@
     background:var(--gold);color:#100e08;font-size:11px;font-weight:700;
     display:flex;align-items:center;justify-content:center;
   }
+  .lang-btn{
+    display:flex;align-items:center;gap:6px;
+    padding:7px 14px;border:1px solid var(--line);border-radius:999px;
+    font-size:12px;letter-spacing:.1em;color:var(--muted);
+    transition:all .2s;
+  }
+  .lang-btn:hover{border-color:var(--gold);color:var(--gold-2)}
+  .lang-btn b{color:var(--gold);font-weight:600}
 
   /* ---------- hero ---------- */
   .hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;overflow:hidden}
@@ -147,7 +155,6 @@
     display:flex;align-items:flex-start;gap:18px;
     padding:22px 0;border-bottom:1px solid rgba(201,169,97,.12);
   }
-  .dish.hide{display:none}
   .dish-main{flex:1;min-width:0}
   .dish h4{font-size:16px;font-weight:500;letter-spacing:.02em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   .badge-mini{
@@ -171,6 +178,7 @@
   }
   .dessert-band img{width:100%;height:100%;object-fit:cover;min-height:320px}
   .dessert-copy{padding:clamp(32px,5vw,64px);display:flex;flex-direction:column;justify-content:center}
+  .dessert-copy .kicker{font-size:11px;letter-spacing:.32em;color:var(--gold);margin-bottom:14px}
   .dessert-copy h3{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,34px);margin-bottom:16px;line-height:1.3}
   .dessert-copy p{color:var(--muted);font-size:14px;margin-bottom:28px}
 
@@ -181,6 +189,7 @@
   .store-item .val{font-size:15px;line-height:1.9;color:#cfc9bf}
   .store-item a{color:var(--gold-2);text-decoration:none;border-bottom:1px solid rgba(201,169,97,.35)}
   .store-item a:hover{border-bottom-color:var(--gold)}
+  .store-note{color:var(--muted);font-size:13px}
 
   footer{padding:44px 5vw;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);letter-spacing:.06em}
   footer .brand b{font-size:13px}
@@ -260,12 +269,14 @@
 
   @media(max-width:760px){
     nav a{display:none}
+    nav{gap:10px}
     .menu-list{grid-template-columns:1fr;gap:0}
     .dessert-band{grid-template-columns:1fr}
     .dessert-band img{min-height:240px}
     .hero{min-height:88vh}
     section{padding:70px 5vw}
     .field-row{grid-template-columns:1fr}
+    .lang-btn span{display:none}
   }
 </style>
 </head>
@@ -276,29 +287,32 @@
     <b>MARGUERITE</b><span>×</span><b>YIWU ROOF</b>
   </a>
   <nav>
-    <a href="#collab">联名限定</a>
-    <a href="#menu">完整菜单</a>
-    <a href="#store">到店信息</a>
+    <a href="#collab" data-i18n="navCollab">联名限定</a>
+    <a href="#menu" data-i18n="navMenu">完整菜单</a>
+    <a href="#store" data-i18n="navStore">到店信息</a>
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">
+      <b id="langCurrent">中</b><span>/ EN</span>
+    </button>
     <button class="cart-btn" id="openCart">
-      购物车 <span class="cart-count" id="cartCount">0</span>
+      <span data-i18n="cart">购物车</span> <span class="cart-count" id="cartCount">0</span>
     </button>
   </nav>
 </header>
 
 <!-- HERO -->
 <section class="hero" style="padding:0">
-  <img class="hero-img" src="assets/hero.jpg" alt="YIWU ROOF 天台露台夜景">
+  <img class="hero-img" src="assets/hero.jpg" alt="YIWU ROOF rooftop terrace at night">
   <div class="hero-inner">
-    <div class="eyebrow">Marguerite × Yiwu Roof · 联名餐酒馆</div>
-    <h1>天际线上的<br><em>一顿好饭</em></h1>
-    <p>环球大厦 5 楼，窑烤披萨、干式熟成牛排与午夜特调。今晚，把城市的灯当作背景。</p>
+    <div class="eyebrow" data-i18n="eyebrow">Marguerite × Yiwu Roof · 联名餐酒馆</div>
+    <h1 id="heroTitle"></h1>
+    <p data-i18n="heroP">环球大厦 5 楼，窑烤披萨、干式熟成牛排与午夜特调。今晚，把城市的灯当作背景。</p>
     <div class="hero-actions">
-      <a class="btn btn-gold" href="#menu">浏览菜单</a>
-      <a class="btn btn-ghost" href="http://dpurl.cn/YYPywGez" target="_blank" rel="noopener">美团店铺</a>
+      <a class="btn btn-gold" href="#menu" data-i18n="browseMenu">浏览菜单</a>
+      <a class="btn btn-ghost" href="http://dpurl.cn/YYPywGez" target="_blank" rel="noopener" data-i18n="meituanShop">美团店铺</a>
     </div>
     <div class="hero-meta">
-      <div>地址 <b>福田街道金融六街 168 号环球大厦 5 楼</b></div>
-      <div>电话 <b>18258411112</b></div>
+      <div><span data-i18n="labelAddress">地址</span> <b data-i18n="addressShort">福田街道金融六街 168 号环球大厦 5 楼</b></div>
+      <div><span data-i18n="labelPhone">电话</span> <b>18258411112</b></div>
     </div>
   </div>
 </section>
@@ -308,8 +322,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Signature</div>
-      <h2>联 名 限 定</h2>
-      <p>本次合作推出的三款招牌，只在 YIWU ROOF 供应。</p>
+      <h2 data-i18n="collabTitle">联 名 限 定</h2>
+      <p data-i18n="collabSub">本次合作推出的三款招牌，只在 YIWU ROOF 供应。</p>
     </div>
     <div class="collab-grid" id="collabGrid"></div>
   </div>
@@ -320,8 +334,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Menu</div>
-      <h2>完 整 菜 单</h2>
-      <p>价格为堂食参考价，实际以门店与美团页面为准。</p>
+      <h2 data-i18n="menuTitle">完 整 菜 单</h2>
+      <p data-i18n="menuSub">价格为堂食参考价，实际以门店与美团页面为准。</p>
     </div>
     <div class="tabs" id="tabs"></div>
     <div class="menu-list" id="menuList"></div>
@@ -332,12 +346,12 @@
 <section style="padding-top:0">
   <div class="wrap">
     <div class="dessert-band">
-      <img src="assets/dessert.jpg" alt="经典提拉米苏">
+      <img src="assets/dessert.jpg" alt="Classic tiramisu">
       <div class="dessert-copy">
-        <div class="kicker" style="font-size:11px;letter-spacing:.32em;color:var(--gold);margin-bottom:14px">Sweet Ending</div>
-        <h3>提拉米苏<br>是这一晚的句号</h3>
-        <p>马斯卡彭与浓缩咖啡，冷藏 8 小时。点一杯 Negroni，配它正好。</p>
-        <div><button class="add-btn" data-id="16">加入购物车 · ¥42</button></div>
+        <div class="kicker">Sweet Ending</div>
+        <h3 id="dessertTitle"></h3>
+        <p data-i18n="dessertP">马斯卡彭与浓缩咖啡，冷藏 8 小时。点一杯 Negroni，配它正好。</p>
+        <div><button class="add-btn" data-id="16" id="dessertAdd"></button></div>
       </div>
     </div>
   </div>
@@ -348,30 +362,32 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Visit Us</div>
-      <h2>到 店 信 息</h2>
+      <h2 data-i18n="storeTitle">到 店 信 息</h2>
     </div>
     <div class="store-grid">
       <div class="store-item">
         <div class="lbl">Address</div>
-        <div class="val">浙江省义乌市福田街道<br>金融六街 168 号<br>环球大厦 5 楼<br>YIWU ROOF 义乌汝弗餐酒馆</div>
+        <div class="val" data-i18n-html="storeAddress">
+          浙江省义乌市福田街道<br>金融六街 168 号<br>环球大厦 5 楼<br>YIWU ROOF 义乌汝弗餐酒馆
+        </div>
       </div>
       <div class="store-item">
         <div class="lbl">Reservation</div>
         <div class="val">
           <a href="tel:18258411112">18258411112</a><br>
           <a href="tel:15267331413">15267331413</a><br>
-          <span style="color:var(--muted);font-size:13px">建议提前一天预订</span>
+          <span class="store-note" data-i18n="reserveNote">建议提前一天预订</span>
         </div>
       </div>
       <div class="store-item">
         <div class="lbl">Hours</div>
-        <div class="val">午市 11:00 – 14:00<br>晚市 17:00 – 22:00<br>酒廊 22:00 – 01:00</div>
+        <div class="val" data-i18n-html="storeHours">午市 11:00 – 14:00<br>晚市 17:00 – 22:00<br>酒廊 22:00 – 01:00</div>
       </div>
       <div class="store-item">
         <div class="lbl">Online</div>
         <div class="val">
-          <a href="http://dpurl.cn/YYPywGez" target="_blank" rel="noopener">美团 / 大众点评店铺</a><br>
-          <span style="color:var(--muted);font-size:13px">线上点单、团购套餐</span>
+          <a href="http://dpurl.cn/YYPywGez" target="_blank" rel="noopener" data-i18n="meituanLink">美团 / 大众点评店铺</a><br>
+          <span class="store-note" data-i18n="onlineNote">线上点单、团购套餐</span>
         </div>
       </div>
     </div>
@@ -380,22 +396,22 @@
 
 <footer>
   <div class="brand"><b>MARGUERITE</b><span>×</span><b>YIWU ROOF</b></div>
-  <div>© 2026 MARGUERITE × YIWU ROOF 联名企划</div>
+  <div data-i18n="copyright">© 2026 MARGUERITE × YIWU ROOF 联名企划</div>
 </footer>
 
 <!-- 购物车 -->
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer">
   <div class="drawer-head">
-    <h3>购物车</h3>
+    <h3 data-i18n="cart">购物车</h3>
     <button class="x-btn" id="closeCart">&times;</button>
   </div>
   <div class="drawer-body" id="cartBody"></div>
   <div class="drawer-foot">
-    <div class="sum-row"><span>小计</span><span id="subtotal">¥0</span></div>
-    <div class="sum-row"><span>餐具 / 打包</span><span>到店确认</span></div>
-    <div class="sum-row total"><span>合计</span><b id="total">¥0</b></div>
-    <button class="btn btn-gold" id="goCheckout" style="width:100%">去结算</button>
+    <div class="sum-row"><span data-i18n="subtotal">小计</span><span id="subtotal">¥0</span></div>
+    <div class="sum-row"><span data-i18n="extras">餐具 / 打包</span><span data-i18n="confirmAtStore">到店确认</span></div>
+    <div class="sum-row total"><span data-i18n="total">合计</span><b id="total">¥0</b></div>
+    <button class="btn btn-gold" id="goCheckout" style="width:100%" data-i18n="checkout">去结算</button>
   </div>
 </aside>
 
@@ -403,36 +419,31 @@
 <div class="modal" id="checkoutModal">
   <div class="modal-card">
     <button class="x-btn" id="closeCheckout" style="position:absolute;top:16px;right:18px">&times;</button>
-    <h3>确认预订信息</h3>
-    <div class="sub">提交后生成订单小票，可直接发送给门店微信</div>
+    <h3 data-i18n="bookingTitle">确认预订信息</h3>
+    <div class="sub" data-i18n="bookingSub">提交后生成订单小票，可直接发送给门店微信</div>
     <div class="field-row">
-      <div class="field"><label>姓名</label><input id="fName" placeholder="怎么称呼您"></div>
-      <div class="field"><label>手机号</label><input id="fPhone" type="tel" placeholder="用于门店联系"></div>
+      <div class="field"><label data-i18n="fName">姓名</label><input id="fName" data-i18n-ph="phName" placeholder="怎么称呼您"></div>
+      <div class="field"><label data-i18n="fPhone">手机号</label><input id="fPhone" type="tel" data-i18n-ph="phPhone" placeholder="用于门店联系"></div>
     </div>
     <div class="field-row">
-      <div class="field"><label>到店日期</label><input id="fDate" type="date"></div>
-      <div class="field"><label>到店时间</label>
-        <select id="fTime">
-          <option>11:30</option><option>12:00</option><option>12:30</option>
-          <option>17:30</option><option>18:00</option><option>18:30</option>
-          <option>19:00</option><option>19:30</option><option>20:00</option>
-          <option>20:30</option><option>21:00</option>
-        </select>
+      <div class="field"><label data-i18n="fDate">到店日期</label><input id="fDate" type="date"></div>
+      <div class="field"><label data-i18n="fTime">到店时间</label>
+        <select id="fTime"></select>
       </div>
     </div>
     <div class="field-row">
-      <div class="field"><label>用餐人数</label>
-        <select id="fGuests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>6 人以上</option></select>
+      <div class="field"><label data-i18n="fGuests">用餐人数</label>
+        <select id="fGuests"></select>
       </div>
-      <div class="field"><label>座位偏好</label>
-        <select id="fSeat"><option>不限</option><option>露台位</option><option>窗边</option><option>吧台</option><option>包间</option></select>
+      <div class="field"><label data-i18n="fSeat">座位偏好</label>
+        <select id="fSeat"></select>
       </div>
     </div>
-    <div class="field"><label>备注</label><textarea id="fNote" placeholder="忌口、纪念日、需要蛋糕等"></textarea></div>
+    <div class="field"><label data-i18n="fNote">备注</label><textarea id="fNote" data-i18n-ph="phNote" placeholder="忌口、纪念日、需要蛋糕等"></textarea></div>
     <div class="modal-actions">
-      <button class="btn btn-gold" id="submitOrder">生成订单小票</button>
+      <button class="btn btn-gold" id="submitOrder" data-i18n="submitOrder">生成订单小票</button>
     </div>
-    <p class="hint">本页面不收取任何费用，订单需由门店确认。</p>
+    <p class="hint" data-i18n="bookingHint">本页面不收取任何费用，订单需由门店确认。</p>
   </div>
 </div>
 
@@ -440,162 +451,350 @@
 <div class="modal" id="ticketModal">
   <div class="modal-card">
     <button class="x-btn" id="closeTicket" style="position:absolute;top:16px;right:18px">&times;</button>
-    <h3>订单已生成</h3>
-    <div class="sub">复制后发送给门店微信，或直接致电确认</div>
+    <h3 data-i18n="ticketTitle">订单已生成</h3>
+    <div class="sub" data-i18n="ticketSub">复制后发送给门店微信，或直接致电确认</div>
     <div class="ticket" id="ticketBody"></div>
     <div class="modal-actions">
-      <button class="btn btn-gold" id="copyOrder">复制订单信息</button>
-      <a class="btn btn-ghost" href="tel:18258411112">拨打门店电话 18258411112</a>
-      <a class="btn btn-ghost" href="http://dpurl.cn/YYPywGez" target="_blank" rel="noopener">在美团查看门店</a>
+      <button class="btn btn-gold" id="copyOrder" data-i18n="copyOrder">复制订单信息</button>
+      <a class="btn btn-ghost" href="tel:18258411112" id="callBtn">拨打门店电话 18258411112</a>
+      <a class="btn btn-ghost" href="http://dpurl.cn/YYPywGez" target="_blank" rel="noopener" data-i18n="viewOnMeituan">在美团查看门店</a>
     </div>
-    <p class="hint">门店确认后订单生效，到店出示小票即可。</p>
+    <p class="hint" data-i18n="ticketHint">门店确认后订单生效，到店出示小票即可。</p>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* ---------------- 菜单数据 ---------------- */
+/* ================= 国际化文案 ================= */
+const I18N = {
+  zh: {
+    navCollab:'联名限定', navMenu:'完整菜单', navStore:'到店信息', cart:'购物车',
+    eyebrow:'Marguerite × Yiwu Roof · 联名餐酒馆',
+    heroTitle:'天际线上的<br><em>一顿好饭</em>',
+    heroP:'环球大厦 5 楼，窑烤披萨、干式熟成牛排与午夜特调。今晚，把城市的灯当作背景。',
+    browseMenu:'浏览菜单', meituanShop:'美团店铺',
+    labelAddress:'地址', labelPhone:'电话',
+    addressShort:'福田街道金融六街 168 号环球大厦 5 楼',
+    collabTitle:'联 名 限 定', collabSub:'本次合作推出的三款招牌，只在 YIWU ROOF 供应。',
+    menuTitle:'完 整 菜 单', menuSub:'价格为堂食参考价，实际以门店与美团页面为准。',
+    dessertTitle:'提拉米苏<br>是这一晚的句号',
+    dessertP:'马斯卡彭与浓缩咖啡，冷藏 8 小时。点一杯 Negroni，配它正好。',
+    dessertAdd:'加入购物车 · ¥42',
+    storeTitle:'到 店 信 息',
+    storeAddress:'浙江省义乌市福田街道<br>金融六街 168 号<br>环球大厦 5 楼<br>YIWU ROOF 义乌汝弗餐酒馆',
+    storeHours:'午市 11:00 – 14:00<br>晚市 17:00 – 22:00<br>酒廊 22:00 – 01:00',
+    reserveNote:'建议提前一天预订', meituanLink:'美团 / 大众点评店铺', onlineNote:'线上点单、团购套餐',
+    copyright:'© 2026 MARGUERITE × YIWU ROOF 联名企划',
+    subtotal:'小计', extras:'餐具 / 打包', confirmAtStore:'到店确认', total:'合计', checkout:'去结算',
+    emptyCart:'购物车还是空的<br>去菜单挑几道吧',
+    bookingTitle:'确认预订信息', bookingSub:'提交后生成订单小票，可直接发送给门店微信',
+    fName:'姓名', fPhone:'手机号', fDate:'到店日期', fTime:'到店时间', fGuests:'用餐人数', fSeat:'座位偏好', fNote:'备注',
+    phName:'怎么称呼您', phPhone:'用于门店联系', phNote:'忌口、纪念日、需要蛋糕等',
+    submitOrder:'生成订单小票', bookingHint:'本页面不收取任何费用，订单需由门店确认。',
+    ticketTitle:'订单已生成', ticketSub:'复制后发送给门店微信，或直接致电确认',
+    copyOrder:'复制订单信息', callBtn:'拨打门店电话 18258411112', viewOnMeituan:'在美团查看门店',
+    ticketHint:'门店确认后订单生效，到店出示小票即可。',
+    add:'加入', addToCart:'加入购物车',
+    toastAdded:'已加入：', toastCopied:'已复制，粘贴发送给门店微信', toastCopyFail:'复制失败，请手动长按选择',
+    toastName:'请填写姓名', toastPhone:'请填写有效手机号', toastEmpty:'购物车是空的',
+    tkHeadSub:'义乌汝弗餐酒馆 · 预订小票',
+    tkOrder:'单号', tkTime:'下单时间', tkVisit:'到店', tkSeat:'座位', tkContact:'联系人', tkNote:'备注', tkTotal:'合计',
+    orderTitle:'【MARGUERITE × YIWU ROOF 预订】', orderVisit:'到店', orderPerson:'人', orderSeat:'座位',
+    orderContact:'联系人', orderNote:'备注', orderTotal:'合计', orderAddr:'地址', orderTel:'电话',
+    seats:['不限','露台位','窗边','吧台','包间'],
+    guests:['1','2','3','4','5','6','6 人以上'],
+    cats:{all:'全部',signature:'招牌与联名',starter:'前菜小食',main:'主菜',pasta:'意面主食',dessert:'甜品',drink:'酒水特调'}
+  },
+  en: {
+    navCollab:'Collaboration', navMenu:'Full Menu', navStore:'Visit Us', cart:'Cart',
+    eyebrow:'Marguerite × Yiwu Roof · Collaboration Bistro',
+    heroTitle:'A good dinner<br><em>above the city</em>',
+    heroP:'Fifth floor of Global Tower — wood-fired pizza, dry-aged steak and midnight cocktails. Tonight, let the city lights be the backdrop.',
+    browseMenu:'Browse Menu', meituanShop:'View on Meituan',
+    labelAddress:'Address', labelPhone:'Tel',
+    addressShort:'5F Global Tower, 168 Financial 6th St, Yiwu',
+    collabTitle:'Signature Selection', collabSub:'Three signature plates created for this collaboration, served only at YIWU ROOF.',
+    menuTitle:'Full Menu', menuSub:'Prices are for dine-in reference; please refer to the in-store menu and Meituan page.',
+    dessertTitle:'Tiramisu —<br>the full stop of the night',
+    dessertP:'Mascarpone and espresso, chilled for 8 hours. Order a Negroni to go with it.',
+    dessertAdd:'Add to Cart · ¥42',
+    storeTitle:'Visit Us',
+    storeAddress:'5F, Global Tower<br>168 Financial 6th Street<br>Futian Subdistrict, Yiwu<br>Zhejiang, China',
+    storeHours:'Lunch 11:00 – 14:00<br>Dinner 17:00 – 22:00<br>Lounge 22:00 – 01:00',
+    reserveNote:'Reservation recommended one day ahead', meituanLink:'Meituan / Dianping listing', onlineNote:'Online ordering & set menus',
+    copyright:'© 2026 MARGUERITE × YIWU ROOF Collaboration',
+    subtotal:'Subtotal', extras:'Service / Packing', confirmAtStore:'Confirmed in store', total:'Total', checkout:'Checkout',
+    emptyCart:'Your cart is empty<br>Pick something from the menu',
+    bookingTitle:'Confirm Your Booking', bookingSub:'A booking slip will be generated — send it to the restaurant on WeChat',
+    fName:'Name', fPhone:'Mobile', fDate:'Date', fTime:'Time', fGuests:'Guests', fSeat:'Seating', fNote:'Notes',
+    phName:'How should we call you', phPhone:'For the restaurant to reach you', phNote:'Allergies, anniversary, cake request...',
+    submitOrder:'Generate Booking Slip', bookingHint:'No payment is taken on this page. The restaurant will confirm your booking.',
+    ticketTitle:'Booking Slip Ready', ticketSub:'Copy it and send to the restaurant on WeChat, or simply call them',
+    copyOrder:'Copy Booking Details', callBtn:'Call 18258411112', viewOnMeituan:'View on Meituan',
+    ticketHint:'Your booking is confirmed once the restaurant replies. Show this slip on arrival.',
+    add:'Add', addToCart:'Add to Cart',
+    toastAdded:'Added: ', toastCopied:'Copied — paste and send to the restaurant on WeChat', toastCopyFail:'Copy failed, please select the text manually',
+    toastName:'Please enter your name', toastPhone:'Please enter a valid mobile number', toastEmpty:'Your cart is empty',
+    tkHeadSub:'YIWU ROOF Bistro · Booking Slip',
+    tkOrder:'Order No.', tkTime:'Placed at', tkVisit:'Visit', tkSeat:'Seating', tkContact:'Contact', tkNote:'Notes', tkTotal:'Total',
+    orderTitle:'[MARGUERITE × YIWU ROOF Booking]', orderVisit:'Visit', orderPerson:'pax', orderSeat:'Seating',
+    orderContact:'Contact', orderNote:'Notes', orderTotal:'Total', orderAddr:'Address', orderTel:'Tel',
+    seats:['No preference','Terrace','Window','Bar','Private room'],
+    guests:['1','2','3','4','5','6','7+'],
+    cats:{all:'All',signature:'Signature',starter:'Starters',main:'Mains',pasta:'Pasta',dessert:'Desserts',drink:'Drinks'}
+  }
+};
+
+/* ================= 菜单数据（中英双语） ================= */
 const dishes = [
-  {id:1,  cat:'signature', name:'汝弗招牌战斧牛排', spec:'1000g / 两人份', price:298, desc:'干式熟成 21 天，现烤约 45 分钟，配迷迭香与烤蒜', badge:'招牌', img:'assets/steak.jpg'},
-  {id:2,  cat:'signature', name:'玛格丽特披萨', spec:'12 寸', price:88, desc:'那不勒斯窑烤，水牛芝士、圣马扎诺番茄与新鲜罗勒', badge:'联名款', img:'assets/pizza.jpg'},
-  {id:3,  cat:'signature', name:'玫瑰荔枝气泡特调', spec:'含低度气泡酒', price:58, desc:'荔枝果肉与玫瑰花瓣，微醺不烈，联名限定配方', badge:'联名限定', img:'assets/cocktail.jpg'},
+  {id:1, cat:'signature', price:298, img:'assets/steak.jpg',
+   zh:{name:'汝弗招牌战斧牛排', spec:'1000g / 两人份', desc:'干式熟成 21 天，现烤约 45 分钟，配迷迭香与烤蒜', badge:'招牌'},
+   en:{name:'Roof Signature Tomahawk', spec:'1000g / serves two', desc:'Dry-aged 21 days, roasted to order in about 45 minutes, rosemary and roast garlic', badge:'Signature'}},
 
-  {id:4,  cat:'starter', name:'松露薯条', price:38, desc:'帕玛森芝士碎与黑松露酱，现炸'},
-  {id:5,  cat:'starter', name:'香煎鹅肝配无花果', price:78, desc:'外焦内嫩，配无花果酱与布里欧修'},
-  {id:6,  cat:'starter', name:'伊比利亚火腿拼盘', price:88, desc:'48 个月风干，配蜜瓜与芝麻菜'},
-  {id:7,  cat:'starter', name:'芝士焗生蚝', spec:'3 只', price:68, desc:'蒜香黄油与马苏里拉，焗至表面金黄'},
-  {id:8,  cat:'starter', name:'凯撒沙拉', price:48, desc:'罗马生菜、帕玛森、手工面包丁'},
+  {id:2, cat:'signature', price:88, img:'assets/pizza.jpg',
+   zh:{name:'玛格丽特披萨', spec:'12 寸', desc:'那不勒斯窑烤，水牛芝士、圣马扎诺番茄与新鲜罗勒', badge:'联名款'},
+   en:{name:'Margherita Pizza', spec:'12 inch', desc:'Wood-fired Neapolitan style, buffalo mozzarella, San Marzano tomato and fresh basil', badge:'Collaboration'}},
 
-  {id:9,  cat:'main', name:'惠灵顿牛排', price:228, desc:'菲力裹蘑菇酱与酥皮，需提前 40 分钟预订'},
-  {id:10, cat:'main', name:'香煎银鳕鱼', price:158, desc:'柠檬黄油汁，配时蔬与土豆泥'},
-  {id:11, cat:'main', name:'慢烤法式羊排', price:168, desc:'低温慢烤 6 小时，配黑椒汁'},
-  {id:12, cat:'main', name:'黑松露野菌烩饭', price:88, desc:'意式短粒米，帕玛森乳化'},
+  {id:3, cat:'signature', price:58, img:'assets/cocktail.jpg',
+   zh:{name:'玫瑰荔枝气泡特调', spec:'含低度气泡酒', desc:'荔枝果肉与玫瑰花瓣，微醺不烈，联名限定配方', badge:'联名限定'},
+   en:{name:'Rose & Lychee Spritz', spec:'Low-ABV sparkling', desc:'Lychee flesh and rose petals, gently tipsy — a collaboration-only recipe', badge:'Collab Exclusive'}},
 
-  {id:13, cat:'pasta', name:'经典卡邦尼意面', price:68, desc:'蛋黄、猪颊肉与佩科里诺，不加奶油'},
-  {id:14, cat:'pasta', name:'海鲜墨鱼汁意面', price:78, desc:'虾、蛤蜊与鱿鱼，墨鱼汁收汁'},
-  {id:15, cat:'pasta', name:'松露蘑菇意面', price:72, desc:'奶油基底，黑松露酱与口蘑'},
+  {id:4, cat:'starter', price:38,
+   zh:{name:'松露薯条', desc:'帕玛森芝士碎与黑松露酱，现炸'},
+   en:{name:'Truffle Fries', desc:'Freshly fried, parmesan and black truffle mayo'}},
 
-  {id:16, cat:'dessert', name:'经典提拉米苏', price:42, desc:'马斯卡彭与浓缩咖啡，冷藏 8 小时', img:'assets/dessert.jpg'},
-  {id:17, cat:'dessert', name:'熔岩巧克力蛋糕', price:46, desc:'比利时可可，切开会流心'},
-  {id:18, cat:'dessert', name:'巴斯克芝士蛋糕', price:38, desc:'焦香表层，绵密内芯'},
+  {id:5, cat:'starter', price:78,
+   zh:{name:'香煎鹅肝配无花果', desc:'外焦内嫩，配无花果酱与布里欧修'},
+   en:{name:'Seared Foie Gras with Fig', desc:'Crisp outside, silky inside, fig jam and brioche'}},
 
-  {id:19, cat:'drink', name:'内格罗尼 Negroni', price:68, desc:'金酒、金巴利与甜味美思，经典 1:1:1'},
-  {id:20, cat:'drink', name:'精酿 IPA', spec:'330ml', price:42, desc:'柑橘与松针香气，苦度适中'},
-  {id:21, cat:'drink', name:'手冲单品咖啡', price:38, desc:'当日豆单请询问服务生'},
-  {id:22, cat:'drink', name:'冷萃美式', price:28, desc:'冷萃 12 小时，口感干净'},
-  {id:23, cat:'drink', name:'无酒精莫吉托', price:32, desc:'青柠、薄荷与苏打，清爽解腻'}
+  {id:6, cat:'starter', price:88,
+   zh:{name:'伊比利亚火腿拼盘', desc:'48 个月风干，配蜜瓜与芝麻菜'},
+   en:{name:'Iberico Ham Platter', desc:'48-month cured, served with melon and arugula'}},
+
+  {id:7, cat:'starter', price:68,
+   zh:{name:'芝士焗生蚝', spec:'3 只', desc:'蒜香黄油与马苏里拉，焗至表面金黄'},
+   en:{name:'Baked Oysters', spec:'3 pcs', desc:'Garlic butter and mozzarella, baked until golden'}},
+
+  {id:8, cat:'starter', price:48,
+   zh:{name:'凯撒沙拉', desc:'罗马生菜、帕玛森、手工面包丁'},
+   en:{name:'Caesar Salad', desc:'Romaine, parmesan and hand-cut croutons'}},
+
+  {id:9, cat:'main', price:228,
+   zh:{name:'惠灵顿牛排', desc:'菲力裹蘑菇酱与酥皮，需提前 40 分钟预订'},
+   en:{name:'Beef Wellington', desc:'Fillet wrapped in duxelles and puff pastry, please order 40 minutes ahead'}},
+
+  {id:10, cat:'main', price:158,
+   zh:{name:'香煎银鳕鱼', desc:'柠檬黄油汁，配时蔬与土豆泥'},
+   en:{name:'Pan-Seared Cod', desc:'Lemon butter sauce, seasonal vegetables and mash'}},
+
+  {id:11, cat:'main', price:168,
+   zh:{name:'慢烤法式羊排', desc:'低温慢烤 6 小时，配黑椒汁'},
+   en:{name:'Slow-Roasted Lamb Rack', desc:'Six hours at low temperature, black pepper jus'}},
+
+  {id:12, cat:'main', price:88,
+   zh:{name:'黑松露野菌烩饭', desc:'意式短粒米，帕玛森乳化'},
+   en:{name:'Black Truffle Mushroom Risotto', desc:'Carnaroli rice, emulsified with parmesan'}},
+
+  {id:13, cat:'pasta', price:68,
+   zh:{name:'经典卡邦尼意面', desc:'蛋黄、猪颊肉与佩科里诺，不加奶油'},
+   en:{name:'Classic Carbonara', desc:'Egg yolk, guanciale and pecorino — no cream'}},
+
+  {id:14, cat:'pasta', price:78,
+   zh:{name:'海鲜墨鱼汁意面', desc:'虾、蛤蜊与鱿鱼，墨鱼汁收汁'},
+   en:{name:'Seafood Squid Ink Pasta', desc:'Prawn, clam and squid, reduced in squid ink'}},
+
+  {id:15, cat:'pasta', price:72,
+   zh:{name:'松露蘑菇意面', desc:'奶油基底，黑松露酱与口蘑'},
+   en:{name:'Truffle Mushroom Pasta', desc:'Cream base, black truffle sauce and button mushrooms'}},
+
+  {id:16, cat:'dessert', price:42, img:'assets/dessert.jpg',
+   zh:{name:'经典提拉米苏', desc:'马斯卡彭与浓缩咖啡，冷藏 8 小时'},
+   en:{name:'Classic Tiramisu', desc:'Mascarpone and espresso, chilled for 8 hours'}},
+
+  {id:17, cat:'dessert', price:46,
+   zh:{name:'熔岩巧克力蛋糕', desc:'比利时可可，切开会流心'},
+   en:{name:'Molten Chocolate Cake', desc:'Belgian cocoa, molten centre'}},
+
+  {id:18, cat:'dessert', price:38,
+   zh:{name:'巴斯克芝士蛋糕', desc:'焦香表层，绵密内芯'},
+   en:{name:'Basque Cheesecake', desc:'Caramelised top, dense creamy centre'}},
+
+  {id:19, cat:'drink', price:68,
+   zh:{name:'内格罗尼 Negroni', desc:'金酒、金巴利与甜味美思，经典 1:1:1'},
+   en:{name:'Negroni', desc:'Gin, Campari and sweet vermouth — the classic 1:1:1'}},
+
+  {id:20, cat:'drink', price:42,
+   zh:{name:'精酿 IPA', spec:'330ml', desc:'柑橘与松针香气，苦度适中'},
+   en:{name:'Craft IPA', spec:'330ml', desc:'Citrus and pine on the nose, moderate bitterness'}},
+
+  {id:21, cat:'drink', price:38,
+   zh:{name:'手冲单品咖啡', desc:'当日豆单请询问服务生'},
+   en:{name:'Pour-Over Coffee', desc:'Ask our staff for today\u2019s single-origin selection'}},
+
+  {id:22, cat:'drink', price:28,
+   zh:{name:'冷萃美式', desc:'冷萃 12 小时，口感干净'},
+   en:{name:'Cold Brew Americano', desc:'12-hour cold brew, clean finish'}},
+
+  {id:23, cat:'drink', price:32,
+   zh:{name:'无酒精莫吉托', desc:'青柠、薄荷与苏打，清爽解腻'},
+   en:{name:'Virgin Mojito', desc:'Lime, mint and soda — refreshing and light'}}
 ];
 
-const cats = [
-  {key:'all', label:'全部'},
-  {key:'signature', label:'招牌与联名'},
-  {key:'starter', label:'前菜小食'},
-  {key:'main', label:'主菜'},
-  {key:'pasta', label:'意面主食'},
-  {key:'dessert', label:'甜品'},
-  {key:'drink', label:'酒水特调'}
-];
+const catOrder = ['all','signature','starter','main','pasta','dessert','drink'];
 
-const cart = {}; // id -> qty
+/* ================= 状态 ================= */
+let lang = 'zh';
+const cart = {};
+let lastOrder = null;
 
-/* ---------------- 渲染 ---------------- */
+const T = () => I18N[lang];
+const L = obj => obj[lang] || obj.zh;
 function money(n){ return '¥' + (Number.isInteger(n) ? n : n.toFixed(2)); }
 
-function renderCollab(){
-  const grid = document.getElementById('collabGrid');
-  grid.innerHTML = dishes.filter(d => d.cat === 'signature').map(d => `
-    <article class="collab-card">
-      <div class="ph"><img src="${d.img}" alt="${d.name}" loading="lazy"></div>
-      <div class="body">
-        <span class="tag">${d.badge || '招牌'}</span>
-        <h3>${d.name}</h3>
-        <p>${d.desc}</p>
-        <div class="price-row">
-          <div class="price">¥${d.price}<small>${d.spec ? ' / ' + d.spec : ''}</small></div>
-          <button class="add-btn" data-id="${d.id}">加入</button>
-        </div>
-      </div>
-    </article>
-  `).join('');
+/* ================= 渲染 ================= */
+function applyStatic(){
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = T()[el.dataset.i18n];
+    if (typeof v === 'string') el.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const v = T()[el.dataset.i18nHtml];
+    if (typeof v === 'string') el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = T()[el.dataset.i18nPh];
+    if (typeof v === 'string') el.placeholder = v;
+  });
+
+  document.getElementById('heroTitle').innerHTML = T().heroTitle;
+  document.getElementById('dessertTitle').innerHTML = T().dessertTitle;
+  document.getElementById('dessertAdd').textContent = T().dessertAdd;
+  document.getElementById('callBtn').textContent = T().callBtn;
+  document.getElementById('langCurrent').textContent = lang === 'zh' ? '中' : 'EN';
+  document.querySelector('#langBtn span').textContent = lang === 'zh' ? '/ EN' : '/ 中';
+
+  // 下拉选项
+  const timeOpts = ['11:30','12:00','12:30','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'];
+  const timeSel = document.getElementById('fTime');
+  const keepTime = timeSel.value || '18:30';
+  timeSel.innerHTML = timeOpts.map(t => `<option>${t}</option>`).join('');
+  timeSel.value = timeOpts.includes(keepTime) ? keepTime : '18:30';
+
+  const guestSel = document.getElementById('fGuests');
+  const keepGuest = guestSel.selectedIndex;
+  guestSel.innerHTML = T().guests.map(g => `<option>${g}</option>`).join('');
+  guestSel.selectedIndex = keepGuest >= 0 && keepGuest < T().guests.length ? keepGuest : 1;
+
+  const seatSel = document.getElementById('fSeat');
+  const keepSeat = seatSel.selectedIndex;
+  seatSel.innerHTML = T().seats.map(s => `<option>${s}</option>`).join('');
+  seatSel.selectedIndex = keepSeat >= 0 && keepSeat < T().seats.length ? keepSeat : 0;
+
+  document.title = lang === 'zh'
+    ? 'MARGUERITE × YIWU ROOF｜义乌汝弗餐酒馆'
+    : 'MARGUERITE × YIWU ROOF | Yiwu Roof Bistro & Lounge';
 }
 
-function renderTabs(){
-  document.getElementById('tabs').innerHTML = cats.map((c,i) =>
-    `<button class="tab${i===0?' active':''}" data-cat="${c.key}">${c.label}</button>`
+function renderCollab(){
+  document.getElementById('collabGrid').innerHTML =
+    dishes.filter(d => d.cat === 'signature').map(d => {
+      const c = L(d);
+      return `
+      <article class="collab-card">
+        <div class="ph"><img src="${d.img}" alt="${c.name}" loading="lazy"></div>
+        <div class="body">
+          <span class="tag">${c.badge || ''}</span>
+          <h3>${c.name}</h3>
+          <p>${c.desc}</p>
+          <div class="price-row">
+            <div class="price">¥${d.price}<small>${c.spec ? ' / ' + c.spec : ''}</small></div>
+            <button class="add-btn" data-id="${d.id}">${T().add}</button>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+}
+
+function renderTabs(active){
+  const cur = active || document.querySelector('.tab.active')?.dataset.cat || 'all';
+  document.getElementById('tabs').innerHTML = catOrder.map(k =>
+    `<button class="tab${k === cur ? ' active' : ''}" data-cat="${k}">${T().cats[k]}</button>`
   ).join('');
 }
 
 function renderMenu(cat){
-  const list = cat === 'all' ? dishes : dishes.filter(d => d.cat === cat);
-  document.getElementById('menuList').innerHTML = list.map(d => `
-    <div class="dish" data-cat="${d.cat}">
+  const key = cat || document.querySelector('.tab.active')?.dataset.cat || 'all';
+  const list = key === 'all' ? dishes : dishes.filter(d => d.cat === key);
+  document.getElementById('menuList').innerHTML = list.map(d => {
+    const c = L(d);
+    return `
+    <div class="dish">
       <div class="dish-main">
-        <h4>${d.name}${d.badge ? `<span class="badge-mini">${d.badge}</span>` : ''}</h4>
-        <p>${d.desc}${d.spec ? ' · ' + d.spec : ''}</p>
+        <h4>${c.name}${c.badge ? `<span class="badge-mini">${c.badge}</span>` : ''}</h4>
+        <p>${c.desc}${c.spec ? ' · ' + c.spec : ''}</p>
       </div>
       <div class="dish-side">
         <div class="dish-price">¥${d.price}</div>
-        <button class="mini-add" data-id="${d.id}" aria-label="加入购物车">+</button>
+        <button class="mini-add" data-id="${d.id}" aria-label="${T().addToCart}">+</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-/* ---------------- 购物车 ---------------- */
+/* ================= 购物车 ================= */
+function cartEntries(){
+  return Object.keys(cart).map(k => {
+    const d = dishes.find(x => x.id === Number(k));
+    return { dish: d, qty: cart[k] };
+  });
+}
+function cartTotal(){ return cartEntries().reduce((s, e) => s + e.dish.price * e.qty, 0); }
+
 function addToCart(id){
   cart[id] = (cart[id] || 0) + 1;
   updateCart();
   const d = dishes.find(x => x.id === id);
-  toast(`已加入：${d.name}`);
+  toast(T().toastAdded + L(d).name);
 }
 function changeQty(id, delta){
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
   updateCart();
 }
-function cartEntries(){
-  return Object.keys(cart).map(k => {
-    const d = dishes.find(x => x.id === Number(k));
-    return { ...d, qty: cart[k] };
-  });
-}
-function cartTotal(){
-  return cartEntries().reduce((s, it) => s + it.price * it.qty, 0);
-}
+
 function updateCart(){
   const entries = cartEntries();
-  const count = entries.reduce((s, it) => s + it.qty, 0);
-  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartCount').textContent = entries.reduce((s, e) => s + e.qty, 0);
 
   const body = document.getElementById('cartBody');
   if (!entries.length){
-    body.innerHTML = `<div class="empty"><span>◈</span>购物车还是空的<br>去菜单挑几道吧</div>`;
+    body.innerHTML = `<div class="empty"><span>◈</span>${T().emptyCart}</div>`;
   } else {
-    body.innerHTML = entries.map(it => `
+    body.innerHTML = entries.map(e => {
+      const c = L(e.dish);
+      return `
       <div class="c-item">
-        <div class="nm">
-          <b>${it.name}</b>
-          <span>¥${it.price}${it.spec ? ' · ' + it.spec : ''}</span>
-        </div>
+        <div class="nm"><b>${c.name}</b><span>¥${e.dish.price}${c.spec ? ' · ' + c.spec : ''}</span></div>
         <div class="qty">
-          <button data-dec="${it.id}">−</button>
-          <span>${it.qty}</span>
-          <button data-inc="${it.id}">+</button>
+          <button data-dec="${e.dish.id}">−</button>
+          <span>${e.qty}</span>
+          <button data-inc="${e.dish.id}">+</button>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
   document.getElementById('subtotal').textContent = money(cartTotal());
   document.getElementById('total').textContent = money(cartTotal());
 }
 
-/* ---------------- 抽屉 / 弹窗 ---------------- */
+/* ================= 弹层 ================= */
 const overlay = document.getElementById('overlay');
 const drawer = document.getElementById('drawer');
 function openDrawer(){ drawer.classList.add('on'); overlay.classList.add('on'); }
 function closeDrawer(){ drawer.classList.remove('on'); overlay.classList.remove('on'); }
-
 function openModal(id){ document.getElementById(id).classList.add('on'); overlay.classList.add('on'); }
 function closeModal(id){ document.getElementById(id).classList.remove('on'); overlay.classList.remove('on'); }
 
@@ -605,18 +804,16 @@ function toast(msg){
   t.textContent = msg;
   t.classList.add('on');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('on'), 1800);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 1900);
 }
 
-/* ---------------- 订单 ---------------- */
-let lastOrder = null;
-
+/* ================= 订单 ================= */
 function buildOrder(){
   const name = document.getElementById('fName').value.trim();
   const phone = document.getElementById('fPhone').value.trim();
-  if (!name){ toast('请填写姓名'); document.getElementById('fName').focus(); return null; }
-  if (!/^\d{6,}$/.test(phone)){ toast('请填写有效手机号'); document.getElementById('fPhone').focus(); return null; }
-  if (!cartEntries().length){ toast('购物车是空的'); return null; }
+  if (!name){ toast(T().toastName); document.getElementById('fName').focus(); return null; }
+  if (!/^\d{6,}$/.test(phone)){ toast(T().toastPhone); document.getElementById('fPhone').focus(); return null; }
+  if (!cartEntries().length){ toast(T().toastEmpty); return null; }
 
   const now = new Date();
   const pad = n => String(n).padStart(2,'0');
@@ -637,39 +834,37 @@ function buildOrder(){
 }
 
 function renderTicket(o){
-  const rows = o.items.map(it =>
-    `<div class="tk-line"><span class="n">${it.name} × ${it.qty}</span><span>¥${it.price * it.qty}</span></div>`
+  const rows = o.items.map(e =>
+    `<div class="tk-line"><span class="n">${L(e.dish).name} × ${e.qty}</span><span>¥${e.dish.price * e.qty}</span></div>`
   ).join('');
+  const t = T();
   return `
-    <div class="tk-head">
-      <b>YIWU ROOF</b>
-      <span>义乌汝弗餐酒馆 · 预订小票</span>
-    </div>
-    <div class="tk-line"><span class="n">单号</span><span>${o.orderNo}</span></div>
-    <div class="tk-line"><span class="n">下单时间</span><span>${o.created}</span></div>
-    <div class="tk-line"><span class="n">到店</span><span>${o.date} ${o.time}　${o.guests} 人</span></div>
-    <div class="tk-line"><span class="n">座位</span><span>${o.seat}</span></div>
-    <div class="tk-line"><span class="n">联系人</span><span>${o.name} ${o.phone}</span></div>
-    ${o.note ? `<div class="tk-line"><span class="n">备注</span><span>${o.note}</span></div>` : ''}
+    <div class="tk-head"><b>YIWU ROOF</b><span>${t.tkHeadSub}</span></div>
+    <div class="tk-line"><span class="n">${t.tkOrder}</span><span>${o.orderNo}</span></div>
+    <div class="tk-line"><span class="n">${t.tkTime}</span><span>${o.created}</span></div>
+    <div class="tk-line"><span class="n">${t.tkVisit}</span><span>${o.date} ${o.time} · ${o.guests}</span></div>
+    <div class="tk-line"><span class="n">${t.tkSeat}</span><span>${o.seat}</span></div>
+    <div class="tk-line"><span class="n">${t.tkContact}</span><span>${o.name} ${o.phone}</span></div>
+    ${o.note ? `<div class="tk-line"><span class="n">${t.tkNote}</span><span>${o.note}</span></div>` : ''}
     <div style="border-top:1px dashed rgba(201,169,97,.2);margin:12px 0"></div>
     ${rows}
-    <div class="tk-line total"><span class="n">合计</span><span>¥${o.total}</span></div>
-  `;
+    <div class="tk-line total"><span class="n">${t.tkTotal}</span><span>¥${o.total}</span></div>`;
 }
 
 function orderText(o){
+  const t = T();
   const lines = [
-    '【MARGUERITE × YIWU ROOF 预订】',
-    `单号：${o.orderNo}`,
-    `到店：${o.date} ${o.time}，${o.guests} 人，座位：${o.seat}`,
-    `联系人：${o.name} ${o.phone}`,
-    o.note ? `备注：${o.note}` : null,
+    t.orderTitle,
+    `${t.tkOrder}: ${o.orderNo}`,
+    `${t.orderVisit}: ${o.date} ${o.time} · ${o.guests} ${t.orderPerson} · ${t.orderSeat}: ${o.seat}`,
+    `${t.orderContact}: ${o.name} ${o.phone}`,
+    o.note ? `${t.orderNote}: ${o.note}` : null,
     '———',
-    ...o.items.map(it => `${it.name} × ${it.qty}　¥${it.price * it.qty}`),
+    ...o.items.map(e => `${L(e.dish).name} × ${e.qty}  ¥${e.dish.price * e.qty}`),
     '———',
-    `合计：¥${o.total}`,
-    '地址：义乌福田街道金融六街168号环球大厦5楼',
-    '电话：18258411112'
+    `${t.orderTotal}: ¥${o.total}`,
+    `${t.orderAddr}: ${lang === 'zh' ? '义乌福田街道金融六街168号环球大厦5楼' : '5F Global Tower, 168 Financial 6th St, Yiwu'}`,
+    `${t.orderTel}: 18258411112`
   ].filter(Boolean);
   return lines.join('\n');
 }
@@ -692,21 +887,32 @@ async function copyText(text){
   }
 }
 
-/* ---------------- 事件绑定 ---------------- */
+/* ================= 初始化 ================= */
+function renderAll(){
+  applyStatic();
+  renderCollab();
+  renderTabs();
+  renderMenu();
+  updateCart();
+  if (lastOrder) document.getElementById('ticketBody').innerHTML = renderTicket(lastOrder);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   const iso = today.toISOString().split('T')[0];
   document.getElementById('fDate').value = iso;
   document.getElementById('fDate').min = iso;
 
-  renderCollab();
-  renderTabs();
-  renderMenu('all');
-  updateCart();
+  renderAll();
 
-  // 头部滚动
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // 语言切换
+  document.getElementById('langBtn').addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    renderAll();
   });
 
   // 分类切换
@@ -718,14 +924,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMenu(tab.dataset.cat);
   });
 
-  // 加入购物车（事件委托）
+  // 加购（事件委托）
   document.addEventListener('click', e => {
     const add = e.target.closest('[data-id]');
     if (add && (add.classList.contains('add-btn') || add.classList.contains('mini-add'))){
       addToCart(Number(add.dataset.id));
-      if (add.classList.contains('add-btn')){
+      if (add.classList.contains('add-btn') && add.id !== 'dessertAdd'){
         const old = add.textContent;
-        add.textContent = '已加入';
+        add.textContent = lang === 'zh' ? '已加入' : 'Added';
         add.classList.add('added');
         setTimeout(() => { add.textContent = old; add.classList.remove('added'); }, 1200);
       }
@@ -736,18 +942,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dec) changeQty(Number(dec.dataset.dec), -1);
   });
 
-  // 抽屉
   document.getElementById('openCart').addEventListener('click', openDrawer);
   document.getElementById('closeCart').addEventListener('click', closeDrawer);
   overlay.addEventListener('click', () => {
-    closeDrawer();
-    closeModal('checkoutModal');
-    closeModal('ticketModal');
+    closeDrawer(); closeModal('checkoutModal'); closeModal('ticketModal');
   });
 
-  // 结算
   document.getElementById('goCheckout').addEventListener('click', () => {
-    if (!cartEntries().length){ toast('购物车是空的'); return; }
+    if (!cartEntries().length){ toast(T().toastEmpty); return; }
     closeDrawer();
     openModal('checkoutModal');
   });
@@ -767,7 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('copyOrder').addEventListener('click', async () => {
     if (!lastOrder) return;
     const ok = await copyText(orderText(lastOrder));
-    toast(ok ? '已复制，粘贴发送给门店微信' : '复制失败，请手动长按选择');
+    toast(ok ? T().toastCopied : T().toastCopyFail);
   });
 });
 </script>
