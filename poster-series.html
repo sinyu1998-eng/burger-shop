@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>周六活动海报系列</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    width:1080px;height:1440px;overflow:hidden;position:relative;
+    background:#0a0a0c;color:#ece8e1;
+    font-family:-apple-system,"PingFang SC","Helvetica Neue",Arial,sans-serif;
+  }
+  .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+  .veil{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(10,10,12,.42) 0%, rgba(10,10,12,.78) 55%, rgba(10,10,12,.97) 100%),
+      linear-gradient(180deg, rgba(10,10,12,.55) 0%, rgba(10,10,12,.2) 30%, rgba(10,10,12,.92) 72%, #0a0a0c 100%);
+  }
+  /* 家宴版：无照片，暖调渐变 */
+  .home-bg{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(85% 55% at 74% 16%, rgba(201,169,97,.20) 0%, rgba(201,169,97,.05) 42%, transparent 70%),
+      radial-gradient(60% 40% at 12% 88%, rgba(150,96,48,.18) 0%, transparent 65%),
+      linear-gradient(158deg,#161009 0%, #0b0a08 52%, #0a0a0c 100%);
+  }
+  .orn{
+    position:absolute;right:64px;top:150px;
+    font-family:"Songti SC","Noto Serif SC",Georgia,serif;
+    font-size:520px;line-height:.8;color:rgba(201,169,97,.055);
+    letter-spacing:-.04em;user-select:none;
+  }
+  .grain{
+    position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;
+    background-image:radial-gradient(#fff 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  .frame{position:absolute;inset:38px;border:1px solid rgba(201,169,97,.28)}
+  .content{position:absolute;inset:0;display:flex;flex-direction:column;padding:86px 92px 78px}
+
+  .top{display:flex;align-items:center;justify-content:space-between;letter-spacing:.3em;font-size:15px}
+  .top .l{color:#e6d3a3;font-weight:600}
+  .top .c{color:rgba(201,169,97,.55);font-size:13px;letter-spacing:.5em}
+  .top .r{color:rgba(236,232,225,.5);font-size:13px}
+  .rule{height:1px;background:linear-gradient(90deg,rgba(201,169,97,.5),rgba(201,169,97,.06));margin:28px 0 0}
+
+  .head{margin-top:auto}
+  .kicker{display:inline-flex;align-items:center;gap:14px;font-size:16px;letter-spacing:.34em;color:#c9a961;margin-bottom:30px}
+  .kicker::before{content:"";width:44px;height:1px;background:#c9a961}
+  h1{font-family:"Songti SC","Noto Serif SC",Georgia,serif;font-weight:400;font-size:100px;line-height:1.16;letter-spacing:.01em}
+  h1 em{font-style:normal;color:#e6d3a3}
+  .sub{margin-top:30px;font-size:24px;color:#b7b1a7;letter-spacing:.06em;line-height:1.7;max-width:880px}
+
+  .info{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(201,169,97,.22);border-bottom:1px solid rgba(201,169,97,.22)}
+  .cell{padding:28px 34px 28px 0;border-bottom:1px solid rgba(201,169,97,.12)}
+  .cell:nth-child(odd){border-right:1px solid rgba(201,169,97,.12)}
+  .cell:nth-child(even){padding-left:38px;padding-right:0}
+  .cell:nth-child(3),.cell:nth-child(4){border-bottom:none}
+  .k{font-size:12px;letter-spacing:.3em;color:rgba(201,169,97,.85);margin-bottom:12px}
+  .v{font-size:26px;line-height:1.5;color:#f0ece4}
+  .v small{display:block;font-size:16px;color:#8f897f;margin-top:6px;letter-spacing:.04em}
+  .v b{color:#e6d3a3;font-weight:600}
+
+  .topics{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap}
+  .chip{padding:12px 22px;border:1px solid rgba(201,169,97,.34);border-radius:2px;font-size:17px;color:#d8d2c7;letter-spacing:.05em}
+  .chip i{font-style:normal;color:#c9a961;margin-right:9px;font-size:13px}
+
+  .agenda{margin-top:44px;display:flex}
+  .step{flex:1;position:relative;padding-right:18px}
+  .step .dot{width:7px;height:7px;border-radius:50%;background:#c9a961;margin-bottom:16px}
+  .step .ln{position:absolute;top:3px;left:14px;right:0;height:1px;background:rgba(201,169,97,.22)}
+  .step .t{font-size:14px;color:#c9a961;letter-spacing:.14em;margin-bottom:7px}
+  .step .d{font-size:16px;color:#a9a399;letter-spacing:.03em}
+
+  .foot{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;padding-top:34px;border-top:1px solid rgba(201,169,97,.22)}
+  .foot .join{font-size:15px;color:#8f897f;letter-spacing:.12em;margin-bottom:10px}
+  .foot .way{font-size:25px;color:#e6d3a3;letter-spacing:.04em;font-weight:600}
+  .foot .way span{color:#6f6a62;font-size:17px;font-weight:400;margin:0 10px}
+  .badge{text-align:right;font-size:13px;color:#6f6a62;letter-spacing:.22em;line-height:2}
+  .badge b{color:#c9a961;font-size:16px;letter-spacing:.24em}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ============ 八场周六活动的配置 ============ */
+const POSTERS = [
+  { no:1, venue:'restaurant', img:'assets/hero.jpg',
+    kicker:'外贸 × 跨境电商 闭门晚宴',
+    t1:'把货，卖到', t2:'世界的另一端',
+    sub:'29 楼晚宴局，一群真在做生意的人，聊点不客套的问题。',
+    place:'思达大厦 29 楼', placeSub:'义乌 · 福田街道 · YIWU ROOF LOUNGE',
+    seats:'30', fee:'¥199 / 位', feeSub:'含晚宴 · 联名特调 · 伴手礼',
+    topics:['平台流量见底，独立站还值不值','工厂直出 vs 贸易商','跨境收款与合规的坑'],
+    brand:'YIWU ROOF LOUNGE', badge:'义乌汝弗西餐吧 · 29F', orn:'壹' },
+
+  { no:2, venue:'home', img:'',
+    kicker:'私厨小局 · 八人桌',
+    t1:'八个人，', t2:'一顿不设防的饭',
+    sub:'在我家厨房做，不谈 PPT，只谈你在义乌真踩过的坑。',
+    place:'MARGUERITE 私宅', placeSub:'义乌 · 确认后一对一发送定位',
+    seats:'8', fee:'¥299 / 位', feeSub:'五道式私厨 · 两支酒 · 不接陌生客',
+    topics:['毛利到底藏在哪一步','谁能替你把货卖出去','明年该砍掉什么'],
+    brand:'MARGUERITE PRIVATE TABLE', badge:'私宅 · 仅限受邀', orn:'贰' },
+
+  { no:3, venue:'restaurant', img:'assets/dessert.jpg',
+    kicker:'独立站 & DTC 实战夜',
+    t1:'别再给平台', t2:'交租金了',
+    sub:'投过、亏过、也起量过的人，聊独立站到底还怎么做。',
+    place:'思达大厦 29 楼', placeSub:'义乌 · 福田街道 · YIWU ROOF LOUNGE',
+    seats:'25', fee:'¥168 / 位', feeSub:'含酒水与小食',
+    topics:['首单成本怎么压到可承受','广告账户的生死线','复购比流量更重要'],
+    brand:'YIWU ROOF LOUNGE', badge:'义乌汝弗西餐吧 · 29F', orn:'叁' },
+
+  { no:4, venue:'home', img:'',
+    kicker:'女性创业者酒叙',
+    t1:'先做自己，', t2:'再做老板',
+    sub:'十个女生的夜晚。聊生意，也聊怎么不被生意吃掉。',
+    place:'MARGUERITE 私宅', placeSub:'义乌 · 确认后一对一发送定位',
+    seats:'10', fee:'¥198 / 位', feeSub:'家宴 · 葡萄酒 · 甜点',
+    topics:['团队里最难开的那次口','家庭与公司的边界','一个人怎么扛住现金流'],
+    brand:'MARGUERITE PRIVATE TABLE', badge:'私宅 · 仅限受邀', orn:'肆' },
+
+  { no:5, venue:'restaurant', img:'assets/pizza.jpg',
+    kicker:'供应链 & 选品对接夜',
+    t1:'好货不愁卖，', t2:'愁的是遇见',
+    sub:'工厂、贸易商、卖家坐一桌，当场对单，别回去发邮件。',
+    place:'思达大厦 29 楼', placeSub:'义乌 · 福田街道 · YIWU ROOF LOUNGE',
+    seats:'30', fee:'¥228 / 位', feeSub:'含晚宴 · 一对一对单',
+    topics:['哪些品今年真的还有量','起订量与账期怎么谈','打样到出货的最短路径'],
+    brand:'YIWU ROOF LOUNGE', badge:'义乌汝弗西餐吧 · 29F', orn:'伍' },
+
+  { no:6, venue:'home', img:'',
+    kicker:'老板私享家宴',
+    t1:'六个人的饭桌，', t2:'能说的话更多',
+    sub:'做到千万美金量级的人，只在这种桌子上才把话说开。',
+    place:'MARGUERITE 私宅', placeSub:'义乌 · 确认后一对一发送定位',
+    seats:'6', fee:'¥399 / 位', feeSub:'主厨定制 · 好酒 · 不录音',
+    topics:['今年真实的利润率','下一次押什么','谁值得长期合作'],
+    brand:'MARGUERITE PRIVATE TABLE', badge:'私宅 · 仅限受邀', orn:'陆' },
+
+  { no:7, venue:'restaurant', img:'assets/steak.jpg',
+    kicker:'跨境收款 & 合规闭门会',
+    t1:'钱收得回来，', t2:'才算做成生意',
+    sub:'账户被冻过的人，才知道合规这件事值多少钱。',
+    place:'思达大厦 29 楼', placeSub:'义乌 · 福田街道 · YIWU ROOF LOUNGE',
+    seats:'20', fee:'¥199 / 位', feeSub:'含晚宴 · 一对一答疑',
+    topics:['多账户架构怎么搭','退税与外汇核销','被冻结后的真实处理流程'],
+    brand:'YIWU ROOF LOUNGE', badge:'义乌汝弗西餐吧 · 29F', orn:'柒' },
+
+  { no:8, venue:'restaurant', img:'assets/hero.jpg',
+    kicker:'年末复盘 · 闭门局',
+    t1:'这一年，', t2:'你到底赚没赚到',
+    sub:'把账摊开算一遍，明年才知道该砍什么、该押什么。',
+    place:'思达大厦 29 楼', placeSub:'义乌 · 福田街道 · YIWU ROOF LOUNGE',
+    seats:'30', fee:'¥299 / 位', feeSub:'含晚宴 · 复盘手册 · 伴手礼',
+    topics:['一副真实的年终报表','砍掉哪三条业务线','明年的三个赌注'],
+    brand:'YIWU ROOF LOUNGE', badge:'义乌汝弗西餐吧 · 29F', orn:'捌' }
+];
+
+const AGENDA = {
+  restaurant:[['18:00','签到 · 晚宴'],['18:40','主题分享'],['19:40','圆桌对话'],['20:30','自由对接 · 酒叙']],
+  home:[['19:00','到场 · 开胃酒'],['19:30','上菜 · 自我介绍'],['20:10','主题深聊'],['21:20','收尾 · 换名片']]
+};
+
+/* ============ 日期：自动取最近的周六，往后每周一场 ============ */
+function nextSaturday(base){
+  const d = base ? new Date(base + 'T12:00:00') : new Date();
+  if (base) return d;
+  const diff = (6 - d.getDay() + 7) % 7;
+  d.setDate(d.getDate() + diff);
+  return d;
+}
+function fmtDate(d){
+  return (d.getMonth()+1) + '.' + String(d.getDate()).padStart(2,'0');
+}
+function weekDate(i){
+  const base = nextSaturday(startOverride);
+  const d = new Date(base.getTime());
+  d.setDate(d.getDate() + (i-1)*7);
+  return fmtDate(d);
+}
+
+const qs = new URLSearchParams(location.search);
+const idx = Math.min(Math.max(Number(qs.get('p') || 1), 1), POSTERS.length) - 1;
+const startOverride = qs.get('start') || '';
+const p = POSTERS[idx];
+const dateStr = weekDate(p.no);
+
+const isHome = p.venue === 'home';
+const bgLayer = isHome
+  ? `<div class="home-bg"></div><div class="orn">${p.orn}</div>`
+  : `<div class="bg" style="background-image:url('${p.img}')"></div>`;
+
+const topicsHtml = p.topics.map((t, i) =>
+  `<div class="chip"><i>0${i+1}</i>${t}</div>`).join('');
+
+const agendaHtml = AGENDA[p.venue].map(s =>
+  `<div class="step"><div class="dot"></div><div class="ln"></div><div class="t">${s[0]}</div><div class="d">${s[1]}</div></div>`).join('');
+
+const timeRange = isHome ? '19:00 – 22:00' : '18:00 – 21:30';
+
+document.getElementById('app').innerHTML = `
+  ${bgLayer}
+  <div class="veil" style="${isHome ? 'opacity:.72;background:linear-gradient(180deg,rgba(10,10,12,.30) 0%,rgba(10,10,12,.10) 34%,rgba(10,10,12,.86) 74%,#0a0a0c 100%)' : ''}"></div>
+  <div class="grain"></div>
+  <div class="frame"></div>
+  <div class="content">
+    <div class="top">
+      <div class="l">${p.brand}</div>
+      <div class="c">×</div>
+      <div class="r">MARGUERITE</div>
+    </div>
+    <div class="rule"></div>
+
+    <div class="head">
+      <div class="kicker">${p.kicker}</div>
+      <h1>${p.t1}<br><em>${p.t2}</em></h1>
+      <div class="sub">${p.sub}</div>
+    </div>
+
+    <div class="info">
+      <div class="cell">
+        <div class="k">TIME 时间</div>
+        <div class="v">${dateStr} 周六<small>${timeRange}</small></div>
+      </div>
+      <div class="cell">
+        <div class="k">VENUE 地点</div>
+        <div class="v">${p.place}<small>${p.placeSub}</small></div>
+      </div>
+      <div class="cell">
+        <div class="k">SEATS 席位</div>
+        <div class="v">限 <b>${p.seats}</b> 人<small>审核制，谢绝空降</small></div>
+      </div>
+      <div class="cell">
+        <div class="k">FEE 费用</div>
+        <div class="v">${p.fee}<small>${p.feeSub}</small></div>
+      </div>
+    </div>
+
+    <div class="topics">${topicsHtml}</div>
+
+    <div class="agenda">${agendaHtml}</div>
+
+    <div class="foot">
+      <div>
+        <div class="join">报名 / 咨询</div>
+        <div class="way">微信私信<span>·</span>18258411112</div>
+      </div>
+      <div class="badge">
+        <b>${isHome ? 'MARGUERITE' : 'YIWU ROOF LOUNGE'}</b><br>
+        ${p.badge}
+      </div>
+    </div>
+  </div>
+`;
+</script>
+</body>
+</html>
