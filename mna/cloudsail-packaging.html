@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CloudSail 包装与整合方案</title>
+<style>
+  :root{--ink:#12161c;--muted:#66707d;--line:#e3e7ec;--accent:#0e5a8a;--warn:#9a4a3a;--paper:#fff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f2f4f7;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",sans-serif;
+       color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .page{background:var(--paper);max-width:880px;margin:0 auto 26px;padding:58px 62px;
+        box-shadow:0 2px 22px rgba(0,0,0,.06)}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+  h1{font-family:Georgia,"Times New Roman","Songti SC",serif;font-size:31px;font-weight:400;
+     line-height:1.28;margin:14px 0 8px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:34px}
+  h2{font-size:16px;font-weight:600;margin:36px 0 14px;padding-left:12px;border-left:3px solid var(--accent)}
+  h3{font-size:14px;font-weight:600;margin:20px 0 8px}
+  p{font-size:14px;margin-bottom:12px}
+  ul,ol{margin:0 0 14px 20px}
+  li{font-size:13.5px;margin-bottom:7px}
+  table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:13px}
+  th{text-align:left;font-weight:600;border-bottom:1.5px solid var(--ink);padding:9px 8px;font-size:12.5px}
+  td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}
+  td:first-child{white-space:nowrap;color:var(--muted)}
+  .bad{color:var(--warn);font-weight:600}
+  .tree{background:#f7f9fb;border:1px solid var(--line);padding:18px 20px;font-size:13px;
+        font-family:ui-monospace,Menlo,monospace;line-height:1.85;white-space:pre;overflow:auto}
+  .callout{background:#f6f9fc;border-left:3px solid var(--accent);padding:15px 18px;margin:16px 0}
+  .p0{display:inline-block;background:var(--warn);color:#fff;font-size:10px;padding:2px 7px;
+      border-radius:3px;letter-spacing:.08em;margin-right:6px;vertical-align:1px}
+  .p1{display:inline-block;background:#8a6a3b;color:#fff;font-size:10px;padding:2px 7px;
+      border-radius:3px;letter-spacing:.08em;margin-right:6px;vertical-align:1px}
+  .p2{display:inline-block;background:#5a6b7d;color:#fff;font-size:10px;padding:2px 7px;
+      border-radius:3px;letter-spacing:.08em;margin-right:6px;vertical-align:1px}
+  footer{margin-top:38px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  @media print{body{background:#fff}.page{box-shadow:none;max-width:none;margin:0;padding:16mm 18mm}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="kicker">CloudSail · Fideight — Packaging Review</div>
+<h1>包装与整合方案</h1>
+<div class="sub">2026-11-19 ｜ 基于仓库现状（15 个公开页面 + 闭源 private/）｜ Carol Huang</div>
+
+<h2>一、核心判断</h2>
+<p>这个项目的<b>内容已经足够</b>，问题不在缺页面，而在<b>三类内容混在一起</b>：客户看的、投资人看的、内部推演用的，全部平铺在同一层。结果是每一类读者都要自己筛，筛不动就走了。</p>
+
+<table>
+  <tr><th>页面</th><th>实际读者</th><th>当前状态</th></tr>
+  <tr><td>index / product / tech / cockpit</td><td>客户</td><td class="bad">正确</td></tr>
+  <tr><td>articles / contact</td><td>客户</td><td class="bad">正确</td></tr>
+  <tr><td>bp / deck / seed / crowdfund</td><td>投资人</td><td class="bad">不该公开并列</td></tr>
+  <tr><td>competitors</td><td>内部</td><td class="bad">不该公开</td></tr>
+  <tr><td>prototype / glasses</td><td>技术评估者</td><td>需收进二级</td></tr>
+  <tr><td>ru / pay</td><td>俄区客户</td><td>应做成区域变体</td></tr>
+</table>
+
+<div class="callout">
+  <p><b>最关键的一条：</b>把 BP、Deck、竞品分析公开挂在客户官网上，等于把底牌摊给竞争对手看，同时也让客户看到「这家还在融资」，削弱成交信心。</p>
+</div>
+
+<h2>二、整合后的结构</h2>
+<div class="tree">CloudSail
+├── /                    首页（一句话 + 三条证据 + 一个 CTA）
+├── /product             产品：工厂只发货，其余我们托管
+│   ├── /cockpit         驾驶舱演示（可交互）
+│   └── /tech            技术架构
+├── /cases               客户案例 ← 目前缺失，M&A 商城可直接做第一个
+├── /articles            专栏（履约九态）
+├── /contact             联系
+├── /ru                  俄区版本（语言变体，不是独立站）
+└── /investors           ← 投资人区，加密码或仅发链接，不进导航
+    ├── bp / deck / seed / crowdfund / competitors</div>
+
+<p><b>原则：</b>客户路径只有五步——首页 → 产品 → 案例 → 技术 → 联系。任何不服务这条路径的内容，退出导航。</p>
+
+<h2>三、五个具体问题</h2>
+
+<h3><span class="p0">P0</span>融资材料公开暴露</h3>
+<p>bp.html / deck.html / seed.html / crowdfund.html / competitors.html 五个页面现在公开可访问，且很可能被搜索引擎收录。建议：移入 <code>/investors</code>，加 HTTP Basic Auth 或改用不可猜的 URL；同时在 <code>robots.txt</code> 中屏蔽。</p>
+
+<h3><span class="p0">P0</span>缺案例页</h3>
+<p>官网说了「工厂只需要发货」，但没有一个真实客户证明这件事。你手上的 M&A 商城（77 个文件已上线）就是现成的第一个案例。没有案例的 B2B 官网，转化率会低一半以上。</p>
+
+<h3><span class="p1">P1</span>缺报价与交付周期</h3>
+<p>客户看完 product 页，最想知道两个数字：<b>多少钱</b>、<b>多久能上</b>。现在两样都没有，只能去联系页问，中间流失一大半。建议放三档套餐（试点 / 标准 / 全托管），哪怕只写「起步价」。你给爱造软件的方案里已有价格带（托管年费 1.2–3.6 万 + 实施 3–8 万），可以直接用。</p>
+
+<h3><span class="p1">P1</span>俄区是独立站，不是语言层</h3>
+<p>ru.html 与 pay.html 自成一套，和主站没有互链。要么做成语言切换（右上角 RU），要么明确标为「俄罗斯专区」并给出为什么单独计费。现在这种状态，访客会以为进错了站点。</p>
+
+<h3><span class="p2">P2</span>导航缺失</h3>
+<p>15 个页面各自引用 style.css，但没有统一头部导航和页脚。用户从搜索引擎落在任意一页，都找不到回主站的路径。这是最便宜也最有效的修复。</p>
+
+<h2>四、和 M&amp;A 的整合</h2>
+<p>两者不是并列产品，是<b>「系统 + 样板」</b>的关系：</p>
+<table>
+  <tr><th>角色</th><th>M&amp;A</th><th>CloudSail</th></tr>
+  <tr><td>本质</td><td>自营品牌，验证选品与销售</td><td>把验证过的流程产品化，卖给工厂</td></tr>
+  <tr><td>对外</td><td>产品库（买家看货）</td><td>系统（工厂看能力）</td></tr>
+  <tr><td>关系</td><td colspan="2">M&amp;A 跑通 = CloudSail 的案例；CloudSail 卖出去 = M&amp;A 的低成本履约通道</td></tr>
+</table>
+<p><b>具体做法：</b>在 CloudSail 加一页 <code>/cases/marguerite-asbury</code>，写清楚「一个义乌品牌，如何在不雇运营的情况下把货卖到 34 个国家」。用真实数据，不用形容词。</p>
+
+<h2>五、和 Sean 的 tradoncorps 怎么接</h2>
+<p>他说这是个 B2B 外贸平台，你觉得「相对简单」——我同意一半。</p>
+<p><b>简单在：</b>撮合类平台的 MVP 确实轻，买卖双方 + 询盘 + 商品展示，两三个月能跑。</p>
+<p><b>难在：</b>撮合之后的履约没人管，而履约正是你的强项。所以你们不是竞争，是<b>上下游</b>。</p>
+<table>
+  <tr><th>层</th><th>谁做</th><th>产出</th></tr>
+  <tr><td>流量与撮合</td><td>Sean 的 tradoncorps</td><td>买家、询盘、订单</td></tr>
+  <tr><td>履约与托管</td><td>CloudSail</td><td>验厂、打样、生产跟踪、拼柜、单证</td></tr>
+  <tr><td>样品与选品</td><td>M&amp;A 产品库</td><td>可售 SKU 与真实报价</td></tr>
+</table>
+<p><b>接口只需要四个：</b></p>
+<ol>
+  <li><b>订单对象</b>：订单号、买家、SKU、数量、目标价、目的港</li>
+  <li><b>履约状态回写</b>：把「履约九态」的当前状态推回他的平台，买家能看到进度</li>
+  <li><b>报价请求</b>：他从平台发起询价，你回一个带有效期的报价</li>
+  <li><b>单证回传</b>：发票、装箱单、提单号</li>
+</ol>
+<p>这四条用最朴素的方式实现即可（Webhook + JSON），不用一开始就谈 API 规范。先把第一单跑通，接口形态自然会收敛。</p>
+
+<h2>六、执行顺序</h2>
+<table>
+  <tr><th>优先级</th><th>做什么</th><th>效果</th></tr>
+  <tr><td><span class="p0">P0</span></td><td>融资材料移出导航 + robots 屏蔽</td><td>止损，半小时</td></tr>
+  <tr><td><span class="p0">P0</span></td><td>补 /cases，用 M&amp;A 做第一个案例</td><td>转化率提升最直接</td></tr>
+  <tr><td><span class="p1">P1</span></td><td>加三档报价与交付周期</td><td>减少无效询盘</td></tr>
+  <tr><td><span class="p1">P1</span></td><td>统一导航与页脚</td><td>全站可用性</td></tr>
+  <tr><td><span class="p2">P2</span></td><td>俄区并入语言层</td><td>结构清晰</td></tr>
+  <tr><td><span class="p2">P2</span></td><td>给 Sean 出接口草案</td><td>锁定上游合作</td></tr>
+</table>
+
+<footer>
+  CloudSail · Fideight 包装与整合方案 · v1.0 · 2026-11-19
+</footer>
+
+</div>
+</body>
+</html>
