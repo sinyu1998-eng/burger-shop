@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marguerite & Asbury — Product Library</title>
+<style>
+  :root{
+    --paper:#f6f3ee; --ink:#171512; --muted:#6f6a62; --line:#ded7cc;
+    --accent:#8a5a3b; --card:#fffdfa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .serif{font-family:Georgia,"Times New Roman","Songti SC","STSong",serif}
+  header{position:sticky;top:0;z-index:50;background:rgba(246,243,238,.92);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .bar{max-width:1240px;margin:0 auto;padding:18px 28px;display:flex;
+    align-items:center;justify-content:space-between;gap:20px}
+  .brand{letter-spacing:.22em;font-size:13px;text-transform:uppercase}
+  .brand b{font-weight:600}
+  .nav{display:flex;gap:26px;font-size:13px;color:var(--muted)}
+  .nav a{color:inherit;text-decoration:none}
+  .nav a:hover{color:var(--ink)}
+  .lang{border:1px solid var(--line);background:transparent;border-radius:999px;
+    padding:7px 14px;font-size:12px;cursor:pointer;letter-spacing:.08em}
+  .lang:hover{border-color:var(--ink)}
+
+  .hero{max-width:1240px;margin:0 auto;padding:74px 28px 44px}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+  h1{font-size:clamp(38px,5.4vw,68px);line-height:1.06;font-weight:400;letter-spacing:-.01em;max-width:15ch}
+  h1 em{font-style:italic;color:var(--accent)}
+  .lede{margin-top:26px;max-width:56ch;color:var(--muted);font-size:16px;line-height:1.75}
+  .stats{display:flex;gap:44px;margin-top:44px;padding-top:26px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .stat b{display:block;font-size:26px;font-weight:400}
+  .stat span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  .controls{max-width:1240px;margin:0 auto;padding:0 28px 26px;
+    display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+    position:sticky;top:63px;background:var(--paper);z-index:40;padding-top:16px}
+  .chip{border:1px solid var(--line);background:transparent;border-radius:999px;
+    padding:9px 18px;font-size:13px;cursor:pointer;transition:.18s}
+  .chip:hover{border-color:var(--ink)}
+  .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .search{margin-left:auto;border:1px solid var(--line);background:var(--card);
+    border-radius:999px;padding:10px 18px;font-size:13px;width:230px;outline:none}
+  .search:focus{border-color:var(--ink)}
+
+  .grid{max-width:1240px;margin:0 auto;padding:8px 28px 90px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:26px}
+  .card{background:var(--card);border:1px solid var(--line);cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease;overflow:hidden}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(23,21,18,.09)}
+  .thumb{aspect-ratio:1/1;overflow:hidden;background:#eae5dc}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+  .card:hover .thumb img{transform:scale(1.04)}
+  .body{padding:18px 18px 20px}
+  .cat{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+  .name{font-size:17px;margin-top:8px;line-height:1.35}
+  .meta{display:flex;justify-content:space-between;align-items:baseline;
+    margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+  .price{font-size:15px}
+  .moq{font-size:11px;color:var(--muted);letter-spacing:.04em}
+
+  .modal{position:fixed;inset:0;background:rgba(23,21,18,.55);display:none;
+    align-items:center;justify-content:center;padding:24px;z-index:100}
+  .modal.on{display:flex}
+  .sheet{background:var(--paper);max-width:880px;width:100%;max-height:90vh;
+    overflow:auto;display:grid;grid-template-columns:1fr 1fr}
+  .sheet .pic{background:#eae5dc}
+  .sheet .pic img{width:100%;height:100%;object-fit:cover;display:block}
+  .sheet .info{padding:38px 34px}
+  .sheet h2{font-size:28px;font-weight:400;line-height:1.2;margin:10px 0 16px}
+  .sheet p{color:var(--muted);font-size:14px;line-height:1.8}
+  .spec{margin-top:24px;border-top:1px solid var(--line)}
+  .spec div{display:flex;justify-content:space-between;padding:11px 0;
+    border-bottom:1px solid var(--line);font-size:13px}
+  .spec span:first-child{color:var(--muted)}
+  .cta{margin-top:26px;display:block;width:100%;text-align:center;
+    background:var(--ink);color:var(--paper);border:0;padding:15px;
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+  .cta:hover{background:var(--accent)}
+  .close{position:absolute;top:18px;right:22px;background:none;border:0;
+    font-size:26px;cursor:pointer;color:var(--paper);line-height:1}
+  footer{border-top:1px solid var(--line);padding:56px 28px 70px;text-align:center}
+  footer .f1{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  footer .f2{margin-top:14px;font-size:13px;color:var(--muted)}
+  footer a{color:var(--ink)}
+  @media(max-width:720px){
+    .sheet{grid-template-columns:1fr}
+    .sheet .pic{aspect-ratio:4/3}
+    .nav{display:none}
+    .search{margin-left:0;width:100%}
+    .stats{gap:26px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="brand serif"><b>Marguerite &amp; Asbury</b></div>
+    <nav class="nav">
+      <a href="#library" data-t="nav1">产品库</a>
+      <a href="#library" data-t="nav2">按类目浏览</a>
+      <a href="mailto:hello@margueriteasbury.com" data-t="nav3">联系</a>
+    </nav>
+    <button class="lang" id="lang">EN</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow" data-t="eyebrow">义乌 · 源头工厂 · 直供出口</div>
+  <h1 class="serif" data-t="h1">Every piece,<br>traced to <em>a maker.</em></h1>
+  <p class="lede" data-t="lede">每一件产品都能追溯到具体的工厂与工序。我们不做货架上的转手生意，只做能被检验的源头直供——支持小批量打样、验厂、拼柜出口。</p>
+  <div class="stats">
+    <div class="stat"><b>60+</b><span data-t="s1">合作工厂</span></div>
+    <div class="stat"><b>12</b><span data-t="s2">年供应链经验</span></div>
+    <div class="stat"><b>34</b><span data-t="s3">出口国家</span></div>
+    <div class="stat"><b>7d</b><span data-t="s4">平均打样周期</span></div>
+  </div>
+</section>
+
+<div class="controls" id="library">
+  <button class="chip on" data-cat="all" data-t="c0">全部</button>
+  <button class="chip" data-cat="home" data-t="c1">家居器物</button>
+  <button class="chip" data-cat="textile" data-t="c2">织物家纺</button>
+  <button class="chip" data-cat="scent" data-t="c3">香氛蜡烛</button>
+  <button class="chip" data-cat="basket" data-t="c4">藤编收纳</button>
+  <input class="search" id="search" placeholder="搜索产品 / Search" data-t="ph">
+</div>
+
+<main class="grid" id="grid"></main>
+
+<div class="modal" id="modal">
+  <button class="close" id="close">&times;</button>
+  <div class="sheet">
+    <div class="pic"><img id="mImg" alt=""></div>
+    <div class="info">
+      <div class="cat" id="mCat"></div>
+      <h2 class="serif" id="mName"></h2>
+      <p id="mDesc"></p>
+      <div class="spec" id="mSpec"></div>
+      <button class="cta" id="mCta"></button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f1 serif">Marguerite &amp; Asbury — Sourcing Studio, Yiwu</div>
+  <div class="f2"><span data-t="f1">询价与打样：</span> <a href="mailto:hello@margueriteasbury.com">hello@margueriteasbury.com</a></div>
+</footer>
+
+<script>
+/* ============================================================
+   只改这里：把 PRODUCTS 换成你的真实 SKU 即可，页面会自动渲染
+   img 用任意图片地址；留空则使用自动生成的示意图
+   ============================================================ */
+const PRODUCTS = [
+  {id:"MA-101", cat:"home", zh:"素白手作陶碗", en:"Hand-thrown Stoneware Bowl",
+   zhDesc:"景德镇合作窑口手工拉坯，哑光釉面，每只略有差异。适合餐厅与家居零售。",
+   enDesc:"Thrown by hand at a Jingdezhen partner kiln. Matte glaze, subtle variation piece to piece.",
+   material:"Stoneware", size:"Ø16 × H7 cm", moq:"200 pcs", price:"US$4.80", lead:"25 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=minimalist%20handmade%20stoneware%20bowl%20matte%20cream%20glaze%20on%20warm%20beige%20background%20soft%20studio%20light%20editorial%20product%20photography&image_size=square_hd"},
+
+  {id:"MA-102", cat:"home", zh:"黄铜烛台", en:"Brass Taper Holder",
+   zhDesc:"实心黄铜车削，随使用氧化出温润包浆。可做镀镍、做旧两种表面。",
+   enDesc:"Solid brass, turned and hand-finished. Develops a warm patina over time.",
+   material:"Solid brass", size:"H12 cm", moq:"300 pcs", price:"US$6.20", lead:"20 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=solid%20brass%20candlestick%20holder%20minimal%20still%20life%20warm%20neutral%20background%20soft%20shadow%20editorial%20product%20photo&image_size=square_hd"},
+
+  {id:"MA-103", cat:"home", zh:"胡桃木托盘", en:"Walnut Serving Tray",
+   zhDesc:"整块北美黑胡桃，食品级木蜡油处理，边缘手工倒角。",
+   enDesc:"Single-piece North American walnut, food-safe oil finish, hand-chamfered edge.",
+   material:"Black walnut", size:"40 × 26 cm", moq:"150 pcs", price:"US$11.60", lead:"30 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=walnut%20wood%20serving%20tray%20minimal%20product%20photography%20warm%20beige%20backdrop%20soft%20natural%20light&image_size=square_hd"},
+
+  {id:"MA-201", cat:"textile", zh:"水洗亚麻四件套", en:"Washed Linen Bedding Set",
+   zhDesc:"亚麻混纺，经三遍水洗，越用越软。可定制尺寸与染色。",
+   enDesc:"Linen blend, triple-washed for softness. Custom sizing and dyeing available.",
+   material:"55% linen / 45% cotton", size:"Queen / King", moq:"100 sets", price:"US$38.00", lead:"35 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=washed%20linen%20bedding%20set%20neutral%20oatmeal%20color%20on%20bed%20minimal%20interior%20soft%20morning%20light%20editorial&image_size=square_hd"},
+
+  {id:"MA-202", cat:"textile", zh:"手工织造桌旗", en:"Handwoven Table Runner",
+   zhDesc:"绍兴织造，天然靛蓝染色，可绣客户标识。",
+   enDesc:"Woven in Shaoxing with natural indigo dyeing. Private label embroidery available.",
+   material:"Cotton / indigo", size:"180 × 35 cm", moq:"300 pcs", price:"US$7.40", lead:"22 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=indigo%20handwoven%20cotton%20table%20runner%20on%20rustic%20wooden%20table%20soft%20light%20editorial%20still%20life&image_size=square_hd"},
+
+  {id:"MA-203", cat:"textile", zh:"棉麻抱枕套", en:"Cotton-Linen Cushion Cover",
+   zhDesc:"粗纹棉麻，隐形拉链，不含内芯，适合家居品牌成套采购。",
+   enDesc:"Textured cotton-linen with hidden zipper. Cover only, ideal for retail collections.",
+   material:"Cotton-linen", size:"45 × 45 cm", moq:"500 pcs", price:"US$3.10", lead:"18 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=textured%20cotton%20linen%20cushion%20cover%20neutral%20tones%20on%20linen%20sofa%20minimal%20interior%20soft%20light&image_size=square_hd"},
+
+  {id:"MA-301", cat:"scent", zh:"大豆蜡香薰蜡烛", en:"Soy Wax Scented Candle",
+   zhDesc:"天然大豆蜡，木质芯，可选 12 种香型，支持客户自有香精。",
+   enDesc:"Natural soy wax with wooden wick. Twelve stock scents, or bring your own fragrance.",
+   material:"Soy wax / wood wick", size:"220 g", moq:"500 pcs", price:"US$4.20", lead:"20 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=minimal%20soy%20candle%20in%20amber%20glass%20jar%20warm%20neutral%20background%20soft%20shadow%20editorial%20product%20photo&image_size=square_hd"},
+
+  {id:"MA-302", cat:"scent", zh:"藤条扩香礼盒", en:"Reed Diffuser Gift Set",
+   zhDesc:"含扩香瓶、藤条与礼盒，礼品渠道常备款。",
+   enDesc:"Bottle, reeds and gift box. A steady seller for gifting channels.",
+   material:"Glass / rattan", size:"100 ml", moq:"300 sets", price:"US$5.80", lead:"24 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=reed%20diffuser%20gift%20set%20minimal%20packaging%20beige%20background%20soft%20studio%20light%20product%20photography&image_size=square_hd"},
+
+  {id:"MA-303", cat:"scent", zh:"手工香牌", en:"Hand-pressed Incense Tablet",
+   zhDesc:"古法压制，可挂可放，适合文创与酒店渠道。",
+   enDesc:"Pressed in the traditional way. Hangable or placed, suited to cultural retail and hotels.",
+   material:"Natural herbs", size:"6 cm", moq:"800 pcs", price:"US$1.90", lead:"16 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=handmade%20incense%20tablets%20on%20linen%20cloth%20warm%20beige%20minimal%20still%20life%20soft%20light&image_size=square_hd"},
+
+  {id:"MA-401", cat:"basket", zh:"手工藤编提篮", en:"Handwoven Rattan Basket",
+   zhDesc:"印尼藤料，手工编织，可做把手与内衬定制。",
+   enDesc:"Indonesian rattan, hand-woven. Handle and lining customisation available.",
+   material:"Rattan", size:"32 × 22 × 18 cm", moq:"200 pcs", price:"US$9.50", lead:"28 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=handwoven%20rattan%20basket%20natural%20color%20on%20warm%20beige%20background%20soft%20studio%20light%20editorial&image_size=square_hd"},
+
+  {id:"MA-402", cat:"basket", zh:"收纳藤筐三件套", en:"Rattan Storage Basket Set",
+   zhDesc:"三个尺寸套叠发货，节省运费，家居连锁常采。",
+   enDesc:"Three nesting sizes to save freight. A common pick for home retail chains.",
+   material:"Rattan / seagrass", size:"3 pcs set", moq:"300 sets", price:"US$14.00", lead:"30 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=set%20of%20three%20nesting%20rattan%20storage%20baskets%20minimal%20beige%20interior%20soft%20light%20product%20photo&image_size=square_hd"},
+
+  {id:"MA-403", cat:"basket", zh:"藤编灯罩", en:"Rattan Pendant Shade",
+   zhDesc:"手工编织灯罩，适配 E27 灯头，可配吊线。",
+   enDesc:"Hand-woven shade for E27 fittings, cord set optional.",
+   material:"Rattan", size:"Ø40 cm", moq:"150 pcs", price:"US$12.80", lead:"26 days",
+   img:"https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=handwoven%20rattan%20pendant%20lamp%20shade%20warm%20minimal%20interior%20soft%20evening%20light%20editorial&image_size=square_hd"}
+];
+
+/* ---------- 以下不需要改 ---------- */
+const I18N = {
+  zh:{nav1:"产品库",nav2:"按类目浏览",nav3:"联系",eyebrow:"义乌 · 源头工厂 · 直供出口",
+      s1:"合作工厂",s2:"年供应链经验",s3:"出口国家",s4:"平均打样周期",
+      c0:"全部",c1:"家居器物",c2:"织物家纺",c3:"香氛蜡烛",c4:"藤编收纳",
+      ph:"搜索产品 / Search",f1:"询价与打样：",
+      cta:"发送询价",specM:"材质",specS:"尺寸",specO:"起订量",specP:"参考价",specL:"交期",unit:"件"},
+  en:{nav1:"Library",nav2:"By Category",nav3:"Contact",eyebrow:"Yiwu · Source factories · Direct export",
+      s1:"Partner factories",s2:"Years in sourcing",s3:"Export markets",s4:"Avg. sample lead",
+      c0:"All",c1:"Objects",c2:"Textiles",c3:"Scent",c4:"Baskets",
+      ph:"Search products",f1:"Inquiry & sampling:",
+      cta:"Send Inquiry",specM:"Material",specS:"Size",specO:"MOQ",specP:"FOB Price",specL:"Lead time",unit:"pcs"}
+};
+const CATS = {home:["家居器物","Objects"], textile:["织物家纺","Textiles"],
+              scent:["香氛蜡烛","Scent"], basket:["藤编收纳","Baskets"]};
+let lang = "zh", cat = "all", q = "";
+
+const $ = s => document.querySelector(s);
+const grid = $("#grid");
+
+function render(){
+  const t = I18N[lang];
+  grid.innerHTML = "";
+  PRODUCTS.filter(p =>
+    (cat === "all" || p.cat === cat) &&
+    (q === "" || (p.zh + p.en + p.id).toLowerCase().includes(q.toLowerCase()))
+  ).forEach(p => {
+    const el = document.createElement("article");
+    el.className = "card";
+    el.innerHTML = `
+      <div class="thumb"><img loading="lazy" src="${p.img}" alt="${p.en}"></div>
+      <div class="body">
+        <div class="cat">${CATS[p.cat][lang === "zh" ? 0 : 1]} · ${p.id}</div>
+        <div class="name serif">${lang === "zh" ? p.zh : p.en}</div>
+        <div class="meta"><span class="price">${p.price}</span>
+          <span class="moq">MOQ ${p.moq}</span></div>
+      </div>`;
+    el.onclick = () => open(p);
+    grid.appendChild(el);
+  });
+}
+
+function open(p){
+  const t = I18N[lang];
+  $("#mImg").src = p.img;
+  $("#mCat").textContent = `${CATS[p.cat][lang === "zh" ? 0 : 1]} · ${p.id}`;
+  $("#mName").textContent = lang === "zh" ? p.zh : p.en;
+  $("#mDesc").textContent = lang === "zh" ? p.zhDesc : p.enDesc;
+  $("#mSpec").innerHTML = `
+    <div><span>${t.specM}</span><span>${p.material}</span></div>
+    <div><span>${t.specS}</span><span>${p.size}</span></div>
+    <div><span>${t.specO}</span><span>${p.moq}</span></div>
+    <div><span>${t.specP}</span><span>${p.price}</span></div>
+    <div><span>${t.specL}</span><span>${p.lead}</span></div>`;
+  const subject = encodeURIComponent(`Inquiry ${p.id} — ${p.en}`);
+  const body = encodeURIComponent(
+    `Hello Marguerite & Asbury,\n\nI am interested in ${p.id} (${p.en}).\n` +
+    `Target quantity: \nDestination port: \nCustomisation needed: \n\nThank you.`);
+  $("#mCta").textContent = t.cta;
+  $("#mCta").onclick = () => { location.href = `mailto:hello@margueriteasbury.com?subject=${subject}&body=${body}`; };
+  $("#modal").classList.add("on");
+}
+
+$("#close").onclick = () => $("#modal").classList.remove("on");
+$("#modal").onclick = e => { if(e.target.id === "modal") $("#modal").classList.remove("on"); };
+document.addEventListener("keydown", e => { if(e.key === "Escape") $("#modal").classList.remove("on"); });
+
+document.querySelectorAll(".chip").forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    cat = b.dataset.cat;
+    render();
+  };
+});
+$("#search").oninput = e => { q = e.target.value; render(); };
+
+$("#lang").onclick = () => {
+  lang = lang === "zh" ? "en" : "zh";
+  $("#lang").textContent = lang === "zh" ? "EN" : "中";
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.querySelectorAll("[data-t]").forEach(el => {
+    const k = el.dataset.t;
+    if(I18N[lang][k]) {
+      if(el.tagName === "INPUT") el.placeholder = I18N[lang][k];
+      else el.textContent = I18N[lang][k];
+    }
+  });
+  if(lang === "en"){
+    document.querySelector("h1").innerHTML = "Every piece,<br>traced to <em>a maker.</em>";
+    document.querySelector(".lede").textContent =
+      "Every product traces back to a specific factory and a specific process. We do not resell from a shelf — we source direct, verify on site, and ship in consolidated loads.";
+  } else {
+    document.querySelector("h1").innerHTML = "Every piece,<br>traced to <em>a maker.</em>";
+    document.querySelector(".lede").textContent =
+      "每一件产品都能追溯到具体的工厂与工序。我们不做货架上的转手生意，只做能被检验的源头直供——支持小批量打样、验厂、拼柜出口。";
+  }
+  render();
+};
+
+render();
+</script>
+</body>
+</html>
