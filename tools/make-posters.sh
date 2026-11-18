@@ -8,7 +8,7 @@
 # ============================================================
 
 set -e
-DIR="$(cd "$(dirname "$0")" && pwd)"
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 PORT=8765
 START="${1:-}"

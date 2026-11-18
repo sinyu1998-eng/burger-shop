@@ -1,0 +1,13 @@
+.DS_Store
+
+# 运行日志
+*.log
+
+# 生成产物（可由 tools/make-posters.sh 重新生成）
+posters/
+
+# 本地素材索引用的视频切片（305MB，不入库）
+clips/
+
+# 外部导入的仓库压缩包等
+incoming/
